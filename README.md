@@ -99,9 +99,9 @@ optional:
 - `-npt`, a.k.a `--negative_prompt`: negative text prompt.
 - `-mv`, a.k.a `--make_video`: make a video of the rendering process (**it will take much longer**).
 - `-frame_freq`, a.k.a `--video_frame_freq`: control video frame.
-- **Note:** [Download](https://huggingface.co/akhaliq/CLIPasso/blob/main/u2net.pth) U2Net model if `xdog_intersec=True`
+- **Note:** [Download](https://huggingface.co/akhaliq/CLIPasso/blob/main/u2net.pth) U2Net model and place in `checkpoint/` dir if `xdog_intersec=True`
 
-**check the [Code Run List](https://github.com/ximinng/DiffSketcher/run.md) for more scripts.**
+**check the [Code Run List](https://github.com/ximinng/DiffSketcher/blob/main/run.md) for more scripts.**
 
 ## :books: Acknowledgement
 
