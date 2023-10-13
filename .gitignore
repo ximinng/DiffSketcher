@@ -144,10 +144,6 @@ lightning_logs/*
 # Edit settings
 .editorconfig
 
-# model chexkpoints
-/checkpoint/
-!/checkpoint/placeholder.md
-
 # local results
 /workdir/
 .workdir/
