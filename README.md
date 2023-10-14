@@ -2,10 +2,9 @@
 
 [![NeurIPS](https://img.shields.io/badge/NeurIPS-2023-98E4FF.svg)](https://arxiv.org/abs/2306.14685) [![arXiv](https://img.shields.io/badge/arXiv-2306.14685-b31b1b.svg)](https://arxiv.org/abs/2306.14685)
 
-This repository contains our official implementation of NeurIPS 2023
-paper: [DiffSketcher: Text Guided Vector Sketch Synthesis through Latent Diffusion Models](https://arxiv.org/abs/2306.14685),
-which can enerate high quality SVG based on text. Our project page
-is [here](https://ximinng.github.io/DiffSketcher-project/).
+This repository contains our official implementation of the NeurIPS 2023 paper: DiffSketcher: Text Guided Vector Sketch
+Synthesis through Latent Diffusion Models, which can generate high-quality vector sketches based on text prompts. Our
+project page can be found here.
 
 ![title](./img/title.png)
 
@@ -99,9 +98,12 @@ optional:
 - `-npt`, a.k.a `--negative_prompt`: negative text prompt.
 - `-mv`, a.k.a `--make_video`: make a video of the rendering process (**it will take much longer**).
 - `-frame_freq`, a.k.a `--video_frame_freq`: control video frame.
-- **Note:** [Download](https://huggingface.co/akhaliq/CLIPasso/blob/main/u2net.pth) U2Net model and place in `checkpoint/` dir if `xdog_intersec=True`
+- **Note:** [Download](https://huggingface.co/akhaliq/CLIPasso/blob/main/u2net.pth) U2Net model and place
+  in `checkpoint/` dir if `xdog_intersec=True`
+- add `enable_xformers=True` in `-update` to enable xformers for speeding up. 
+- add `gradient_checkpoint=True` in `-update` to use gradient checkpoint for low VRAM.
 
-**check the [Code Run List](https://github.com/ximinng/DiffSketcher/blob/main/run.md) for more scripts.**
+**More Example: check the [run.md](https://github.com/ximinng/DiffSketcher/blob/main/run.md) for more scripts.**
 
 ## :books: Acknowledgement
 
