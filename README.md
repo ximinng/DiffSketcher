@@ -4,7 +4,7 @@
 
 This repository contains our official implementation of the NeurIPS 2023 paper: DiffSketcher: Text Guided Vector Sketch
 Synthesis through Latent Diffusion Models, which can generate high-quality vector sketches based on text prompts. Our
-project page can be found here.
+project page can be found [here](https://ximinng.github.io/DiffSketcher-project/).
 
 ![title](./img/title.png)
 
@@ -31,7 +31,7 @@ Install pytorch and the following libraries:
 
 ```shell
 conda install pytorch==1.13.1 torchvision==0.14.1 torchaudio==0.13.1 pytorch-cuda=11.6 -c pytorch -c nvidia
-pip install hydra-core omegaconf BeautifulSoup4
+pip install omegaconf BeautifulSoup4
 pip install opencv-python scikit-image matplotlib visdom wandb
 pip install triton numba
 pip install numpy scipy timm scikit-fmm einops
@@ -100,7 +100,7 @@ optional:
 - `-frame_freq`, a.k.a `--video_frame_freq`: control video frame.
 - **Note:** [Download](https://huggingface.co/akhaliq/CLIPasso/blob/main/u2net.pth) U2Net model and place
   in `checkpoint/` dir if `xdog_intersec=True`
-- add `enable_xformers=True` in `-update` to enable xformers for speeding up. 
+- add `enable_xformers=True` in `-update` to enable xformers for speeding up.
 - add `gradient_checkpoint=True` in `-update` to use gradient checkpoint for low VRAM.
 
 **More Example: check the [run.md](https://github.com/ximinng/DiffSketcher/blob/main/run.md) for more scripts.**

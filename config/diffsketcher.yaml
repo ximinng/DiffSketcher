@@ -42,7 +42,7 @@ u2net_path: "./checkpoint/u2net/u2net.pth"
 # ldm
 model_id: "sd15"
 ldm_speed_up: False
-enable_xformers: False
+enable_xformers: True
 gradient_checkpoint: False
 token_ind: 5
 use_ddim: True
