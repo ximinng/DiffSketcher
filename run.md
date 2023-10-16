@@ -58,10 +58,10 @@ You will get the following result:
 CUDA_VISIBLE_DEVICES=0 python run_painterly_render.py \
 -c diffsketcher.yaml \
 -eval_step 10 -save_step 10 \
--update "token_ind=5 attention_init=True num_paths=84 comp_idx=0 attn_coeff=1 softmax_temp=0.4 xdog_intersec=False sds.num_aug=4 sds.grad_scale=1 sds.warmup=0 clip.vis_loss=0 clip.num_aug=4 clip.text_visual_coeff=0 perceptual.coeff=0 lr_scheduler=True num_iter=2000" \
+-update "token_ind=5 attention_init=True num_paths=64 comp_idx=0 attn_coeff=1 softmax_temp=0.4 xdog_intersec=False sds.num_aug=4 sds.grad_scale=1 sds.warmup=0 clip.vis_loss=0 clip.num_aug=4 clip.text_visual_coeff=0 perceptual.coeff=0 lr_scheduler=True num_iter=2000 opacity_delta=0.6" \
 -pt "the silhouette of an elephant on the full moon, minimal 2d line drawing. trending on artstation." \
 -respath ./workdir/zeleSDS84 \
--d 214814
+-d 211710
 ```
 
 You will get the following result:
