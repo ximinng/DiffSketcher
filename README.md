@@ -77,7 +77,7 @@ Example:
 python run_painterly_render.py \ 
   -c diffsketcher.yaml \
   -eval_step 10 -save_step 10 \
-  -update "token_ind=2 num_paths=96 sds.warmup=1500 num_iter=2000" \ 
+  -update "token_ind=2 num_paths=96 sds.warmup=1000 sds.grad_scale=1e-5 num_iter=1500" \ 
   -pt "A horse is drinking water by the lake" \ 
   -respath ./workdir/draw_horse \ 
   -d 998 \

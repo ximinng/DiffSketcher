@@ -29,6 +29,8 @@ from methods.token2attn.ptp_utils import view_images
 from methods.diffusers_warp import init_diffusion_pipeline, model2res
 from methods.diffvg_warp import init_diffvg
 from methods.painter.diffsketcher.process_svg import remove_low_opacity_paths
+
+
 class DiffSketcherPipeline(ModelState):
 
     def __init__(self, args):
@@ -92,6 +94,7 @@ class DiffSketcherPipeline(ModelState):
                                               feats_loss_weights=self.cargs.feats_loss_weights,
                                               fc_loss_weight=self.cargs.fc_loss_weight)
         self.opacity_delta = self.args.opacity_delta
+
     def load_render(self, target_img, attention_map, mask=None):
         renderer = Painter(self.args,
                            num_strokes=self.args.num_paths,
@@ -174,7 +177,7 @@ class DiffSketcherPipeline(ModelState):
             self_attn_vis = self_attn_vis * 255
             self_attn_vis = np.repeat(np.expand_dims(self_attn_vis, axis=2), 3, axis=2).astype(np.uint8)
             view_images(self_attn_vis, save_image=True, fp=self.results_path / "self-attn-final.png")
-            
+
             """attention map fusion"""
             attn_map = self.args.attn_coeff * cross_attn_map + (1 - self.args.attn_coeff) * self_attn
             # to [0, 1]
@@ -367,9 +370,11 @@ class DiffSketcherPipeline(ModelState):
                               name=f"iter{self.step}")
                     # log svg
                     renderer.save_svg(self.svg_logs_dir.as_posix(), f"svg_iter{self.step}")
-                    if self.step >= self.args.sds.warmup and self.step==self.args.num_iter-10:
-                        remove_low_opacity_paths(f'{self.svg_logs_dir.as_posix()}/{f"svg_iter{self.step}"}.svg', f'{self.svg_logs_dir.as_posix()}/{f"svg_iter{self.step}"}.svg', self.opacity_delta)
-                        
+                    if self.step >= self.args.sds.warmup and self.step == self.args.num_iter - 10:
+                        remove_low_opacity_paths(f'{self.svg_logs_dir.as_posix()}/{f"svg_iter{self.step}"}.svg',
+                                                 f'{self.svg_logs_dir.as_posix()}/{f"svg_iter{self.step}"}.svg',
+                                                 self.opacity_delta)
+
                     # log cross attn
                     if self.args.log_cross_attn:
                         controller = AttentionStore()
@@ -415,7 +420,7 @@ class DiffSketcherPipeline(ModelState):
                                       name="semantic_best")
                             renderer.save_svg(self.results_path.as_posix(), "semantic_best")
 
-                # log attention, for once
+                # log attention
                 if self.step == 0 and self.args.attention_init and self.accelerator.is_main_process:
                     plt_attn(renderer.get_attn(),
                              renderer.get_thresh(),
@@ -427,9 +432,11 @@ class DiffSketcherPipeline(ModelState):
                 pbar.update(1)
 
         # saving final result
-        renderer.save_svg(self.results_path.as_posix(), "final_svg")
-        remove_low_opacity_paths(f'{self.svg_logs_dir.as_posix()}/{f"svg_iter{self.step}"}.svg', f'{self.svg_logs_dir.as_posix()}/{"final_svg"}.svg', self.opacity_delta)
-                        
+        renderer.save_svg(self.svg_logs_dir.as_posix(), "final_svg_tmp")
+        remove_low_opacity_paths(self.svg_logs_dir / "final_svg_tmp.svg",
+                                 self.results_path / "final_svg.svg",
+                                 self.opacity_delta)
+
         final_raster_sketch = renderer.get_image().to(self.device)
         save_tensor_img(final_raster_sketch,
                         save_path=self.results_path,
