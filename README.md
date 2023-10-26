@@ -12,6 +12,7 @@ project page can be found [here](https://ximinng.github.io/DiffSketcher-project/
 
 - [10/2023] We released the DiffSketcher code.
 - [10/2023] We released the [VectorFusion code](https://github.com/ximinng/VectorFusion-pytorch).
+- [10/2023] Thanks to [@camenduru](https://github.com/camenduru), [DiffSketcher-colab](https://github.com/camenduru/DiffSketcher-colab) has been released.
 
 ### TODO
 
