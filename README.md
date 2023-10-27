@@ -105,7 +105,7 @@ python run_painterly_render.py \
 crucial:
 
 - `-update "token_ind=2"` indicates the index of cross-attn maps to init strokes.
-- `-update "num_paths=2"` indicates the number of strokes.
+- `-update "num_paths=96"` indicates the number of strokes.
 
 optional:
 

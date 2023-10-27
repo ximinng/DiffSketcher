@@ -35,7 +35,7 @@ CUDA_VISIBLE_DEVICES=0 python run_painterly_render.py -c diffsketcher-width.yaml
 
 Result:
 
-![horse](./img/horse.svg)
+![horse](./img/horse_width.svg)
 
 ---
 
@@ -129,8 +129,15 @@ CUDA_VISIBLE_DEVICES=0 python run_painterly_render.py \
 -eval_step 10 -save_step 10 \
 -update "token_ind=6 num_paths=96 sds.warmup=1500 num_iter=2000" \ 
 -pt "Real photo of Sydney opera house" \ 
--respath ./workdir/house \ 
+-respath ./workdir/sydney_opera_house \ 
 -d 8019 
+```
+
+additional:
+
+```shell
+CUDA_VISIBLE_DEVICES=0 python run_painterly_render.py -c diffsketcher.yaml -eval_step 10 -save_step 10 -update "token_ind=6 num_paths=96 sds.warmup=1500 num_iter=2000" -pt "a photo of Sydney opera house" -respath ./workdir/sydney_opera_house -d 8019 
+CUDA_VISIBLE_DEVICES=0 python run_painterly_render.py -c diffsketcher-width.yaml -eval_step 10 -save_step 10 -update "token_ind=6 num_paths=96 num_iter=500" -pt "a photo of Sydney opera house" -respath ./workdir/sydney_opera_house -d 8019 
 ```
 
 - Neighborhood
