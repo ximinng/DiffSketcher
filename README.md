@@ -12,7 +12,9 @@ project page can be found [here](https://ximinng.github.io/DiffSketcher-project/
 
 - [10/2023] We released the DiffSketcher code.
 - [10/2023] We released the [VectorFusion code](https://github.com/ximinng/VectorFusion-pytorch).
-- [10/2023] Thanks to [@camenduru](https://github.com/camenduru), [DiffSketcher-colab](https://github.com/camenduru/DiffSketcher-colab) has been released.
+- [10/2023] Thanks
+  to [@camenduru](https://github.com/camenduru), [DiffSketcher-colab](https://github.com/camenduru/DiffSketcher-colab)
+  has been released.
 
 ### TODO
 
@@ -72,7 +74,13 @@ python setup.py install
 
 ## 🔥 Quickstart
 
-Example:
+### Example:
+
+Preview:
+
+![horse](./img/horse.svg)
+
+Script:
 
 ```shell
 python run_painterly_render.py \ 
@@ -85,8 +93,6 @@ python run_painterly_render.py \
   --download
 ```
 
-python run_painterly_render.py -c diffsketcher.yaml -eval_step 10 -save_step 10 -update "token_ind=2 num_paths=96 sds.warmup=1000 sds.grad_scale=1e-5 num_iter=1500" -pt "A horse is drinking water by the lake" -npt "van Gogh" -respath ./test/draw_horse -d 998 
-
 - `-c` a.k.a `--config`: configuration file.
 - `-eval_step`: the step size used to eval the method (**too frequent calls will result in longer times**).
 - `-save_step`: the step size used to save the result (**too frequent calls will result in longer times**).
@@ -95,6 +101,11 @@ python run_painterly_render.py -c diffsketcher.yaml -eval_step 10 -save_step 10 
 - `-respath` a.k.a `--results_path`: the folder to save results.
 - `-d` a.k.a `--seed`: random seed.
 - `--download`: download models from huggingface automatically **when you first run them**.
+
+crucial:
+
+- `-update "token_ind=2"` indicates the index of cross-attn maps to init strokes.
+- `-update "num_paths=2"` indicates the number of strokes.
 
 optional:
 
@@ -106,7 +117,28 @@ optional:
 - add `enable_xformers=True` in `-update` to enable xformers for speeding up.
 - add `gradient_checkpoint=True` in `-update` to use gradient checkpoint for low VRAM.
 
-**More Example: check the [run.md](https://github.com/ximinng/DiffSketcher/blob/main/run.md) for more scripts.**
+### Another example
+
+Preview:
+
+![horse](./img/horse_width.svg)
+
+Script:
+
+```shell
+python run_painterly_render.py \ 
+  -c diffsketcher-width.yaml \
+  -eval_step 10 -save_step 10 \
+  -update "token_ind=2 num_paths=96 num_iter=260" \ 
+  -pt "A horse is drinking water by the lake" \ 
+  -respath ./workdir/draw_horse_wdith \ 
+  -d 998 \
+  --download
+```
+
+### More Examples
+
+**check the [run.md](https://github.com/ximinng/DiffSketcher/blob/main/run.md) for more scripts.**
 
 ## :books: Acknowledgement
 

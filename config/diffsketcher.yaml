@@ -33,9 +33,9 @@ xdog_intersec: True # initialize along the edge, mix XDoG and attn up
 softmax_temp: 0.5
 cross_attn_res: 16
 self_attn_res: 32
-max_com: 20
-mean_comp: False
-comp_idx: 0
+max_com: 20 # select the number of the self-attn maps
+mean_comp: False # the average of the self-attn maps
+comp_idx: 0 # if mean_comp==False, indicates the index of the self-attn map
 attn_coeff: 1.0 # attn fusion, w * cross-attn + (1-w) * self-attn
 log_cross_attn: False # True if cross attn every step
 u2net_path: "./checkpoint/u2net/u2net.pth"
@@ -45,7 +45,7 @@ model_id: "sd15"
 ldm_speed_up: False
 enable_xformers: True
 gradient_checkpoint: False
-token_ind: 5
+token_ind: 1 # the index of CLIP prompt embedding, start from 1
 use_ddim: True
 num_inference_steps: 100
 guidance_scale: 7.5 # sdxl default 5.0

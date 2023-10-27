@@ -13,8 +13,7 @@ CUDA_VISIBLE_DEVICES=0 python run_painterly_render.py -c diffsketcher.yaml -eval
 
 For the first command, you will get the following result:
 
-![mushroom](./img/horse.svg)
-
+![horse](./img/horse.svg)
 
 **train from scratch via ASDS loss (horse)**
 
@@ -33,6 +32,12 @@ CUDA_VISIBLE_DEVICES=0 python run_painterly_render.py -c diffsketcher.yaml -eval
 ```shell
 CUDA_VISIBLE_DEVICES=0 python run_painterly_render.py -c diffsketcher-width.yaml -eval_step 10 -save_step 10 -update "token_ind=2 num_paths=128 sds.warmup=1500 num_iter=2000 grad_scale=1e-6" -pt "A horse is drinking water by the lake" -respath ./workdir/draw_horse_width -d 998
 ```
+
+Result:
+
+![horse](./img/horse.svg)
+
+---
 
 **More examples**
 

@@ -227,6 +227,8 @@ class DiffSketcherPipeline(ModelState):
         # log prompts
         self.print(f"prompt: {prompt}")
         self.print(f"negative_prompt: {self.args.negative_prompt}\n")
+        if self.args.negative_prompt is None:
+            self.args.negative_prompt = ""
 
         # init attention
         target_file, attention_map = self.extract_ldm_attn(prompt)
@@ -323,6 +325,12 @@ class DiffSketcherPipeline(ModelState):
                     clip_conv_loss_sum = sum(l_clip_conv)
                     total_visual_loss = self.args.clip.vis_loss * (clip_conv_loss_sum + l_clip_fc)
 
+                # perceptual loss
+                l_percep = torch.tensor(0.)
+                if perceptual_loss_fn is not None:
+                    l_perceptual = perceptual_loss_fn(raster_sketch, inputs).mean()
+                    l_percep = l_perceptual * self.args.perceptual.coeff
+
                 # text-visual loss
                 l_tvd = torch.tensor(0.)
                 if self.cargs.text_visual_coeff > 0:
@@ -330,14 +338,8 @@ class DiffSketcherPipeline(ModelState):
                         raster_sketch_aug, self.args.prompt
                     ) * self.cargs.text_visual_coeff
 
-                # perceptual loss
-                l_percep = torch.tensor(0.)
-                if perceptual_loss_fn is not None:
-                    l_perceptual = perceptual_loss_fn(raster_sketch, inputs).mean()
-                    l_percep = l_perceptual * self.args.perceptual.coeff
-
                 # total loss
-                loss = sds_loss + total_visual_loss + l_tvd + l_percep
+                loss = sds_loss + total_visual_loss + l_percep + l_tvd
 
                 # optimization
                 optimizer.zero_grad_()
@@ -404,6 +406,7 @@ class DiffSketcherPipeline(ModelState):
                                       save_path=self.results_path.as_posix(),
                                       name="visual_best")
                             renderer.save_svg(self.results_path.as_posix(), "visual_best")
+
                         # semantic metric
                         loss_eval = self.clip_score_fn.compute_text_visual_distance(
                             raster_sketch_aug, self.args.prompt
