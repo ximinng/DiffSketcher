@@ -93,7 +93,7 @@ python run_painterly_render.py \
   --download
 ```
 
-- `-c` a.k.a `--config`: configuration file.
+- `-c` a.k.a `--config`: configuration file, saving in `DiffSketcher/config/`.
 - `-eval_step`: the step size used to eval the method (**too frequent calls will result in longer times**).
 - `-save_step`: the step size used to save the result (**too frequent calls will result in longer times**).
 - `-update`: a tool for editing the hyper-params of the configuration file, so you don't need to create a new yaml.
