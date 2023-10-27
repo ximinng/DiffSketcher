@@ -78,7 +78,7 @@ python setup.py install
 
 Preview:
 
-![horse](./img/horse.svg)
+![sydney_opera_house](./img/sydney_opera_house.svg)
 
 Script:
 
@@ -86,10 +86,10 @@ Script:
 python run_painterly_render.py \ 
   -c diffsketcher.yaml \
   -eval_step 10 -save_step 10 \
-  -update "token_ind=2 num_paths=96 sds.warmup=1000 num_iter=1500" \ 
-  -pt "A horse is drinking water by the lake" \ 
-  -respath ./workdir/draw_horse \ 
-  -d 998 \
+  -update "token_ind=4 num_paths=96 sds.warmup=1000 num_iter=1500" \ 
+  -pt "a photo of Sydney opera house" \ 
+  -respath ./workdir/sydney_opera_house \ 
+  -d 8019 \
   --download
 ```
 
@@ -121,7 +121,7 @@ optional:
 
 Preview:
 
-![horse](./img/horse_width.svg)
+![sydney_opera_house](./img/sydney_opera_house_width.svg)
 
 Script:
 
@@ -129,10 +129,10 @@ Script:
 python run_painterly_render.py \ 
   -c diffsketcher-width.yaml \
   -eval_step 10 -save_step 10 \
-  -update "token_ind=2 num_paths=96 num_iter=260" \ 
-  -pt "A horse is drinking water by the lake" \ 
-  -respath ./workdir/draw_horse_wdith \ 
-  -d 998 \
+  -update "token_ind=4 num_paths=48 num_iter=500" \ 
+  -pt "a photo of Sydney opera house" \ 
+  -respath ./workdir/sydney_opera_house \ 
+  -d 8019 \
   --download
 ```
 

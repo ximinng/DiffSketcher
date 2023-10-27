@@ -24,6 +24,7 @@ def remove_low_opacity_paths(svg_file_path, output_file_path, opacity_delta=0.2)
         # Collect stroke-opacity attribute values
         opacity_values = []
         for path in paths:
+            path.tag = path.tag.split('}')[-1]
             opacity = path.get("stroke-opacity")
             if opacity is not None:
                 opacity_values.append(float(opacity))
