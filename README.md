@@ -78,12 +78,14 @@ Example:
 python run_painterly_render.py \ 
   -c diffsketcher.yaml \
   -eval_step 10 -save_step 10 \
-  -update "token_ind=2 num_paths=96 sds.warmup=1000 sds.grad_scale=1e-5 num_iter=1500" \ 
+  -update "token_ind=2 num_paths=96 sds.warmup=1000 num_iter=1500" \ 
   -pt "A horse is drinking water by the lake" \ 
   -respath ./workdir/draw_horse \ 
   -d 998 \
   --download
 ```
+
+python run_painterly_render.py -c diffsketcher.yaml -eval_step 10 -save_step 10 -update "token_ind=2 num_paths=96 sds.warmup=1000 sds.grad_scale=1e-5 num_iter=1500" -pt "A horse is drinking water by the lake" -npt "van Gogh" -respath ./test/draw_horse -d 998 
 
 - `-c` a.k.a `--config`: configuration file.
 - `-eval_step`: the step size used to eval the method (**too frequent calls will result in longer times**).

@@ -112,7 +112,7 @@ class DiffSketcherPipeline(ModelState):
 
         height = width = model2res(self.args.model_id)
         outputs = self.diffusion(prompt=[prompts],
-                                 negative_prompt=self.args.negative_prompt,
+                                 negative_prompt=[self.args.negative_prompt],
                                  height=height,
                                  width=width,
                                  controller=controller,
@@ -299,7 +299,7 @@ class DiffSketcherPipeline(ModelState):
                         crop_size=self.args.sds.crop_size,
                         augments=self.args.sds.augmentations,
                         prompt=[self.args.prompt],
-                        negative_prompt=self.args.negative_prompt,
+                        negative_prompt=[self.args.negative_prompt],
                         guidance_scale=self.args.sds.guidance_scale,
                         grad_scale=grad_scale,
                         t_range=list(self.args.sds.t_range),

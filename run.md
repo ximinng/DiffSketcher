@@ -2,13 +2,13 @@
 
 ## # DiffSketcher:
 
-**JVSP + ASDS fine-tune (horse)**
+**JVSP + ASDS fine-tuning (horse)**
 
 ```shell
 # canvas_size: 224
-CUDA_VISIBLE_DEVICES=0 python run_painterly_render.py -c diffsketcher.yaml -eval_step 10 -save_step 10 -update "token_ind=2 num_paths=96 sds.grad_scale=1e-6" -pt "A horse is drinking water by the lake" -respath ./workdir/draw_horse -d 998
+CUDA_VISIBLE_DEVICES=0 python run_painterly_render.py -c diffsketcher.yaml -eval_step 10 -save_step 10 -update "token_ind=2 num_paths=96" -pt "A horse is drinking water by the lake" -respath ./workdir/draw_horse -d 998
 # canvas_size: 600
-CUDA_VISIBLE_DEVICES=0 python run_painterly_render.py -c diffsketcher.yaml -eval_step 10 -save_step 10 -update "token_ind=2 num_paths=96 sds.grad_scale=1e-6 image_size=600 width=3.5" -pt "A horse is drinking water by the lake" -respath ./workdir/draw_horse -d 998
+CUDA_VISIBLE_DEVICES=0 python run_painterly_render.py -c diffsketcher.yaml -eval_step 10 -save_step 10 -update "token_ind=2 num_paths=96 image_size=600 width=3.5" -pt "A horse is drinking water by the lake" -respath ./workdir/draw_horse -d 998
 ```
 
 For the first command, you will get the following result:
@@ -19,7 +19,7 @@ For the first command, you will get the following result:
 **train from scratch via ASDS loss (horse)**
 
 ```shell
-CUDA_VISIBLE_DEVICES=0 python run_painterly_render.py -c diffsketcher.yaml -eval_step 10 -save_step 10 -update "token_ind=2 num_paths=96 sds.grad_scale=2 sds.warmup=0 clip.vis_loss=0 perceptual.coeff=0 num_iter=2000 grad_scale=1e-5 opacity_delta=0.2" -pt "A horse is drinking water by the lake" -respath ./workdir/draw_horse -d 998
+CUDA_VISIBLE_DEVICES=0 python run_painterly_render.py -c diffsketcher.yaml -eval_step 10 -save_step 10 -update "token_ind=2 num_paths=96 sds.grad_scale=2 sds.warmup=0 clip.vis_loss=0 perceptual.coeff=0 num_iter=2000 opacity_delta=0.2" -pt "A horse is drinking water by the lake" -respath ./workdir/draw_horse -d 998
 ```
 
 **train from scratch via ASDS loss + SDXL (horse)**
@@ -31,7 +31,7 @@ CUDA_VISIBLE_DEVICES=0 python run_painterly_render.py -c diffsketcher.yaml -eval
 **JVSP + ASDS fine-tune (horse) + including width**
 
 ```shell
-CUDA_VISIBLE_DEVICES=0 python run_painterly_render.py -c diffsketcher-width.yaml -eval_step 10 -save_step 10 -update "token_ind=2 num_paths=128 sds.warmup=1500 num_iter=2000 grad_scale=1e-5" -pt "A horse is drinking water by the lake" -respath ./workdir/draw_horse_width -d 998
+CUDA_VISIBLE_DEVICES=0 python run_painterly_render.py -c diffsketcher-width.yaml -eval_step 10 -save_step 10 -update "token_ind=2 num_paths=128 sds.warmup=1500 num_iter=2000 grad_scale=1e-6" -pt "A horse is drinking water by the lake" -respath ./workdir/draw_horse_width -d 998
 ```
 
 **More examples**
@@ -158,7 +158,7 @@ CUDA_VISIBLE_DEVICES=0 python run_painterly_render.py \
 CUDA_VISIBLE_DEVICES=0 python run_painterly_render.py \ 
 -c diffsketcher.yaml \
 -eval_step 10 -save_step 10 \
--update "token_ind=5 num_paths=96 softmax_temp=0.5 sds.grad_scale=1e-5 num_iter=2000" \ 
+-update "token_ind=5 num_paths=96 softmax_temp=0.5 num_iter=2000" \ 
 -pt "portrait of two white bunnies, super realistic, highly detailed" \ 
 -respath ./workdir/bunny \ 
 -d 9001
@@ -170,7 +170,7 @@ CUDA_VISIBLE_DEVICES=0 python run_painterly_render.py \
 CUDA_VISIBLE_DEVICES=0 python run_painterly_render.py \
 -c diffsketcher.yaml \
 -eval_step 10 -save_step 10 \
--update "token_ind=2 num_paths=32 softmax_temp=0.5 sds.grad_scale=1e-6 mask_object=True" \
+-update "token_ind=2 num_paths=32 softmax_temp=0.5 mask_object=True" \
 -pt "A dragon flying in the sky, full body" \
 -respath ./workdir/dragon  \
 -d 8023
@@ -182,7 +182,7 @@ CUDA_VISIBLE_DEVICES=0 python run_painterly_render.py \
 CUDA_VISIBLE_DEVICES=0 python run_painterly_render.py \
 -c diffsketcher.yaml \
 -eval_step 10 -save_step 10 \
--update "token_ind=2 num_paths=128 softmax_temp=0.5 sds.grad_scale=1e-5ss" \ 
+-update "token_ind=2 num_paths=128 softmax_temp=0.5" \ 
 -pt "A unicorn is running on the grassland" \
 -respath ./workdir/unicorn \
 -d 9998
