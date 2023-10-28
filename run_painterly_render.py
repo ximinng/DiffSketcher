@@ -65,7 +65,7 @@ if __name__ == '__main__':
                         required=True, type=str,
                         default="",
                         help="YAML/YML file for configuration.")
-    # data path
+    # TODO: data path
     parser.add_argument("-style", "--style_file",
                         default="", type=str,
                         help="the path of style img place.")

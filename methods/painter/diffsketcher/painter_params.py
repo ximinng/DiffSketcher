@@ -156,6 +156,7 @@ class Painter(nn.Module):
                     group.stroke_color.data[-1].clamp_(0., 1.)  # opacity
 
     def path_pruning(self):
+        # stroke pruning
         for group in self.shape_groups:
             group.stroke_color.data[-1] = (group.stroke_color.data[-1] >= self.color_vars_threshold).float()
 

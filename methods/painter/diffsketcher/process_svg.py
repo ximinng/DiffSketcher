@@ -13,25 +13,22 @@ def remove_low_opacity_paths(svg_file_path, output_file_path, opacity_delta=0.2)
     try:
         # Parse the SVG file
         tree = ET.parse(svg_file_path)
+        namespace = "http://www.w3.org/2000/svg"
+        ET.register_namespace("", namespace)
+
         root = tree.getroot()
-        # set svg
         root.set('version', '1.1')
-        root.set('xmlns', 'http://www.w3.org/2000/svg')
 
         paths = root.findall('.//{http://www.w3.org/2000/svg}path')
-        print(f"n_path input: {len(paths)}")
-
         # Collect stroke-opacity attribute values
         opacity_values = []
         for path in paths:
-            path.tag = path.tag.split('}')[-1]
             opacity = path.get("stroke-opacity")
             if opacity is not None:
                 opacity_values.append(float(opacity))
 
         # Calculate median opacity
         median_opacity = statistics.median(opacity_values) + opacity_delta
-        print(f"median_opacity: {median_opacity}")
 
         # Create a temporary list to store paths to be removed
         paths_to_remove = []
@@ -41,24 +38,24 @@ def remove_low_opacity_paths(svg_file_path, output_file_path, opacity_delta=0.2)
                 paths_to_remove.append(path)
 
         # Remove paths from the root element
-        print(f"num_paths_to_remove: {len(set(paths_to_remove))}")
         for path in paths_to_remove:
             path.set('stroke-opacity', '0')
 
-        # paths = root.findall('.//{http://www.w3.org/2000/svg}path')
-        print(f"n_path now: {len(paths)}")
+        print(f"n_path: {len(paths)}, "
+              f"opacity_thresh: {median_opacity}, "
+              f"n_path_to_remove: {len(set(paths_to_remove))}.")
 
         # Save the modified SVG to the specified path
-        tree.write(output_file_path, encoding='utf-8')
-        print("SVG file saved successfully.")
-        print(f"file has been saved in: {output_file_path}")
+        tree.write(output_file_path, encoding='utf-8', xml_declaration=True, default_namespace="")
+        # print("SVG file saved successfully.")
+        # print(f"file has been saved in: {output_file_path}")
     except Exception as e:
         print(f"An error occurred: {str(e)}")
 
 
 if __name__ == '__main__':
     """
-    python process_svg.py -save ./workdir/p1.svg -tar ./workdir/zDragonSDS64/diffsketcherV15/sd-124602-im224-P96W1.5OP/best_iter.svg
+    python process_svg.py -save ./workdir/xx.svg -tar ./workdir/xx.svg
     """
     parser = argparse.ArgumentParser(description="vary style painterly rendering")
     parser.add_argument("-tar", "--target_file",

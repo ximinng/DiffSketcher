@@ -93,7 +93,6 @@ class DiffSketcherPipeline(ModelState):
                                               feats_loss_type=self.cargs.feats_loss_type,
                                               feats_loss_weights=self.cargs.feats_loss_weights,
                                               fc_loss_weight=self.cargs.fc_loss_weight)
-        self.opacity_delta = self.args.opacity_delta
 
     def load_render(self, target_img, attention_map, mask=None):
         renderer = Painter(self.args,
@@ -286,6 +285,7 @@ class DiffSketcherPipeline(ModelState):
         best_visual_loss, best_semantic_loss = 100, 100
         best_iter_v, best_iter_s = 0, 0
         min_delta = 1e-6
+        vid_idx = 1
 
         self.print(f"\ntotal optimization steps: {self.args.num_iter}")
         with tqdm(initial=self.step, total=self.args.num_iter, disable=not self.accelerator.is_main_process) as pbar:
@@ -346,6 +346,9 @@ class DiffSketcherPipeline(ModelState):
                 loss.backward()
                 optimizer.step_()
 
+                # if self.step % self.args.pruning_freq == 0:
+                #     renderer.path_pruning()
+
                 # update lr
                 if self.args.lr_scheduler:
                     optimizer.update_lr(self.step, self.args.decay_steps)
@@ -361,6 +364,13 @@ class DiffSketcherPipeline(ModelState):
                     f"sds: {grad.item():.4e}"
                 )
 
+                # log video
+                if self.args.make_video and (self.step % self.args.video_frame_freq == 0) \
+                        and self.accelerator.is_main_process:
+                    log_tensor_img(raster_sketch, output_dir=self.png_logs_dir,
+                                   output_prefix=f'frame{vid_idx}', dpi=100)
+                    vid_idx += 1
+
                 # log raster and svg
                 if self.step % self.args.save_step == 0 and self.accelerator.is_main_process:
                     # log png
@@ -372,10 +382,6 @@ class DiffSketcherPipeline(ModelState):
                               name=f"iter{self.step}")
                     # log svg
                     renderer.save_svg(self.svg_logs_dir.as_posix(), f"svg_iter{self.step}")
-                    if self.step >= self.args.sds.warmup and self.step == self.args.num_iter - 10:
-                        remove_low_opacity_paths(f'{self.svg_logs_dir.as_posix()}/{f"svg_iter{self.step}"}.svg',
-                                                 f'{self.svg_logs_dir.as_posix()}/{f"svg_iter{self.step}"}.svg',
-                                                 self.opacity_delta)
 
                     # log cross attn
                     if self.args.log_cross_attn:
@@ -434,16 +440,30 @@ class DiffSketcherPipeline(ModelState):
                 self.step += 1
                 pbar.update(1)
 
-        # saving final result
+        # saving final svg
         renderer.save_svg(self.svg_logs_dir.as_posix(), "final_svg_tmp")
-        remove_low_opacity_paths(self.svg_logs_dir / "final_svg_tmp.svg",
-                                 self.results_path / "final_svg.svg",
-                                 self.opacity_delta)
+        # stroke pruning
+        if self.args.opacity_delta != 0:
+            remove_low_opacity_paths(self.svg_logs_dir / "final_svg_tmp.svg",
+                                     self.results_path / "final_svg.svg",
+                                     self.args.opacity_delta)
 
+        # save raster img
         final_raster_sketch = renderer.get_image().to(self.device)
         save_tensor_img(final_raster_sketch,
                         save_path=self.results_path,
                         name='final_render')
+
+        # convert the intermediate renderings to a video
+        if self.args.make_video:
+            from subprocess import call
+            call([
+                "ffmpeg",
+                "-framerate", 24,
+                "-i", (self.png_logs_dir / "frame%d.png").as_posix(),
+                "-vb", "20M",
+                (self.results_path / "out.mp4").as_posix()
+            ])
 
         self.close(msg="painterly rendering complete.")
 
