@@ -127,10 +127,10 @@ def init_diffusion_pipeline(model_id: AnyStr,
 
     # gradient checkpointing
     if gradient_checkpoint:
-        if pipeline.unet.is_gradient_checkpointing:
+        try:
             print(f"=> enable gradient checkpointing")
             pipeline.unet.enable_gradient_checkpointing()
-        else:
+        except Exception as e:
             print("=> waring: gradient checkpointing is not activated for this model.")
 
     print(f"Diffusion Model: {model_id}")

@@ -1,4 +1,4 @@
-# RUN
+# RUN Scripts
 
 ## # DiffSketcher:
 
@@ -39,23 +39,26 @@ Result:
 
 ---
 
-**More examples**
+## # Stylized DiffSketcher
 
-- Mushroom
+**3D style sketch**
 
 ```shell
-CUDA_VISIBLE_DEVICES=0 python run_painterly_render.py \
--c diffsketcher.yaml \
--eval_step 10 -save_step 10 \
--update "token_ind=4 num_paths=84 comp_idx=0 attn_coeff=1 softmax_temp=0.4 xdog_intersec=False sds.num_aug=4 sds.grad_scale=2 sds.warmup=0 clip.vis_loss=0 clip.num_aug=4 clip.text_visual_coeff=0 perceptual.coeff=0 opacity_delta=0.2 lr_scheduler=True num_iter=3000"
--pt "a brightly colored mushroom growing on a logt, minimal 2d line drawing. trending on artstation." \
--respath ./workdir/Mushroom \
--d 621024
+CUDA_VISIBLE_DEVICES=0 python run_painterly_render.py -c diffsketcher.yaml -eval_step 10 -save_step 10 -update "token_ind=4 num_paths=128 sds.grad_scale=0" -pt "A 3d single rose" -respath ./workdir/3d_rose -rdbz
 ```
 
-You will get the following result:
+**oil painting (TODO)**
 
-![mushroom](./img/mushroom.svg)
+**ink and wash (TODO)**
+
+**one line art (TDO)**
+
+
+**style transfer (TODO)**
+
+---
+
+## # More Examples
 
 - Elephant
 
@@ -227,5 +230,20 @@ CUDA_VISIBLE_DEVICES=0 python run_painterly_render.py \
 -pt "A unicorn is running on the grassland" \
 -respath ./workdir/unicorn \
 -d 9998
+
+- Mushroom
+
+```shell
+CUDA_VISIBLE_DEVICES=0 python run_painterly_render.py \
+-c diffsketcher.yaml \
+-eval_step 10 -save_step 10 \
+-update "token_ind=4 num_paths=84 comp_idx=0 attn_coeff=1 softmax_temp=0.4 xdog_intersec=False sds.num_aug=4 sds.grad_scale=2 sds.warmup=0 clip.vis_loss=0 clip.num_aug=4 clip.text_visual_coeff=0 perceptual.coeff=0 opacity_delta=0.2 lr_scheduler=True num_iter=3000"
+-pt "a brightly colored mushroom growing on a logt, minimal 2d line drawing. trending on artstation." \
+-respath ./workdir/Mushroom \
+-d 621024
 ```
 
+You will get the following result:
+
+![mushroom](./img/mushroom.svg)
+```

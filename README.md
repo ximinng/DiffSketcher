@@ -155,10 +155,10 @@ We gratefully thank the authors for their wonderful works.
 If you use this code for your research, please cite the following work:
 
 ```
-@article{xing2023diffsketcher,
+@inproceedings{xing2023diffsketcher,
   title={DiffSketcher: Text Guided Vector Sketch Synthesis through Latent Diffusion Models},
   author={Xing, Ximing and Wang, Chuang and Zhou, Haitao and Zhang, Jing and Yu, Qian and Xu, Dong},
-  journal={arXiv preprint arXiv:2306.14685},
+  booktitle={Advances in Neural Information Processing Systems (NeurIPS)},
   year={2023}
 }
 ```
