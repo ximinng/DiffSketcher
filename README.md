@@ -72,6 +72,11 @@ pip install svgwrite svgpathtools cssutils torch-tools
 python setup.py install
 ```
 
+> [!NOTE]
+> If you hit upon warning/errors of Compiler version 11 and more not being supported, install GCC and GXX 10.4.0 from conda-forge, then run the installation of diffvg
+> `conda install -c conda-forge gcc==10.4.0 gxx==10.4.0`
+
+
 ## 🔥 Quickstart
 
 ### Example:
