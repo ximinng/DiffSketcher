@@ -10,11 +10,11 @@ project page can be found [here](https://ximinng.github.io/DiffSketcher-project/
 
 ## :new: Update
 
+- [12/2023] 🔥 **We released the [PyTorch-SVGRender](https://github.com/ximinng/PyTorch-SVGRender). Pytorch-SVGRender is
+  the go-to library for state-of-the-art differentiable rendering methods for image vectorization.**
+- [11/2023] We thank [@camenduru](https://github.com/camenduru) for implementing the [DiffSketcher-colab](https://github.com/camenduru/DiffSketcher-colab).
 - [10/2023] We released the DiffSketcher code.
 - [10/2023] We released the [VectorFusion code](https://github.com/ximinng/VectorFusion-pytorch).
-- [10/2023] Thanks
-  to [@camenduru](https://github.com/camenduru), [DiffSketcher-colab](https://github.com/camenduru/DiffSketcher-colab)
-  has been released.
 
 ### TODO
 
@@ -155,11 +155,13 @@ We gratefully thank the authors for their wonderful works.
 If you use this code for your research, please cite the following work:
 
 ```
-@inproceedings{xing2023diffsketcher,
-  title={DiffSketcher: Text Guided Vector Sketch Synthesis through Latent Diffusion Models},
-  author={Xing, Ximing and Wang, Chuang and Zhou, Haitao and Zhang, Jing and Yu, Qian and Xu, Dong},
-  booktitle={Advances in Neural Information Processing Systems (NeurIPS)},
-  year={2023}
+@inproceedings{
+    xing2023diffsketcher,
+    title={DiffSketcher: Text Guided Vector Sketch Synthesis through Latent Diffusion Models},
+    author={XiMing Xing and Chuang Wang and Haitao Zhou and Jing Zhang and Qian Yu and Dong Xu},
+    booktitle={Thirty-seventh Conference on Neural Information Processing Systems},
+    year={2023},
+    url={https://openreview.net/forum?id=CY1xatvEQj}
 }
 ```
 
