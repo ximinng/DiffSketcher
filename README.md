@@ -155,8 +155,7 @@ We gratefully thank the authors for their wonderful works.
 If you use this code for your research, please cite the following work:
 
 ```
-@inproceedings{
-    xing2023diffsketcher,
+@inproceedings{xing2023diffsketcher,
     title={DiffSketcher: Text Guided Vector Sketch Synthesis through Latent Diffusion Models},
     author={XiMing Xing and Chuang Wang and Haitao Zhou and Jing Zhang and Qian Yu and Dong Xu},
     booktitle={Thirty-seventh Conference on Neural Information Processing Systems},
