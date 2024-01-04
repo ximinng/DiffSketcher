@@ -12,7 +12,8 @@ Synthesis through Latent Diffusion Models, which can generate high-quality vecto
 ![teaser1](./img/teaser1.png)
 ![teaser2](./img/teaser2.png)
 **DiffSketcher Rendering Process:**
-<div style="display: flex;">
+
+<div style="display: flex;" align="center">
   <div style="width: 33.33%;">
     <img src="./img/0.gif" alt="Animation 1" style="width: 90%;">
     <p>Prompt: Macaw full color, ultra detailed, realistic, insanely beautiful</p>
