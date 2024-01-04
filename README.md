@@ -13,20 +13,9 @@ Synthesis through Latent Diffusion Models, which can generate high-quality vecto
 ![teaser2](./img/teaser2.png)
 **DiffSketcher Rendering Process:**
 
-<div style="display: flex;" align="center">
-  <div style="width: 33.33%;">
-    <img src="./img/0.gif" alt="Animation 1" style="width: 90%;">
-    <p>Prompt: Macaw full color, ultra detailed, realistic, insanely beautiful</p>
-  </div>
-  <div style="width: 33.33%;">
-    <img src="./img/1.gif" alt="Animation 2" style="width: 90%;">
-    <p>Prompt: Very detailed masterpiece painting of baby yoda hoding a lightsaber</p>
-  </div>
-  <div style="width: 33.33%;">
-    <img src="./img/2.gif" alt="Animation 3" style="width: 90%;">
-    <p>Prompt: Sailboat sailing in the sea on a clear day</p>
-  </div>
-</div>
+| <img src="./img/0.gif" style="width: 200px; height: 200px;"> | <img src="./img/1.gif" style="width: 200px; height: 200px;"> | <img src="./img/2.gif" style="width: 200px; height: 200px;"> |
+| --- | --- |--------------------------------------------------------------|
+| Prompt: Macaw full color, ultra detailed, realistic, insanely beautiful | Prompt: Very detailed masterpiece painting of baby yoda hoding a lightsaber | Prompt: Sailboat sailing in the sea on a clear day           |
 
 ## :new: Update
 
