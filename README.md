@@ -1,14 +1,31 @@
 # DiffSketcher: Text Guided Vector Sketch Synthesis through Latent Diffusion Models
 
-[![NeurIPS](https://img.shields.io/badge/NeurIPS-2023-98E4FF.svg)](https://openreview.net/attachment?id=CY1xatvEQj&name=pdf) 
+[![NeurIPS](https://img.shields.io/badge/NeurIPS-2023-98E4FF.svg)](https://openreview.net/attachment?id=CY1xatvEQj&name=pdf)
 [![arXiv](https://img.shields.io/badge/arXiv-2306.14685-b31b1b.svg)](https://arxiv.org/abs/2306.14685)
 [![website](https://img.shields.io/badge/website-Gitpage-yellow)](https://ximinng.github.io/DiffSketcher-project/)
 
 This repository contains our official implementation of the NeurIPS 2023 paper: DiffSketcher: Text Guided Vector Sketch
-Synthesis through Latent Diffusion Models, which can generate high-quality vector sketches based on text prompts. Our
-project page can be found [here](https://ximinng.github.io/DiffSketcher-project/).
+Synthesis through Latent Diffusion Models, which can generate high-quality vector sketches based on text prompts.
 
-![title](./img/title.png)
+> Our project page can be found [here](https://ximinng.github.io/DiffSketcher-project/).
+
+![teaser1](./img/teaser1.png)
+![teaser2](./img/teaser2.png)
+**DiffSketcher Rendering Process:**
+<div style="display: flex;">
+  <div style="width: 33.33%;">
+    <img src="./img/0.gif" alt="Animation 1" style="width: 90%;">
+    <p>Prompt: Macaw full color, ultra detailed, realistic, insanely beautiful</p>
+  </div>
+  <div style="width: 33.33%;">
+    <img src="./img/1.gif" alt="Animation 2" style="width: 90%;">
+    <p>Prompt: Very detailed masterpiece painting of baby yoda hoding a lightsaber</p>
+  </div>
+  <div style="width: 33.33%;">
+    <img src="./img/2.gif" alt="Animation 3" style="width: 90%;">
+    <p>Prompt: Sailboat sailing in the sea on a clear day</p>
+  </div>
+</div>
 
 ## :new: Update
 
@@ -161,9 +178,7 @@ python run_painterly_render.py \
   -update "token_ind=4 num_paths=2000 num_iter=1500" \
   -pt "portrait of latin woman having a spiritual awaking, eyes closed, slight smile, illuminating lights, oil painting, by Van Gogh" \
   -respath ./workdir/portrait_woman_oil_painting \
-  -d 998
- 
-CUDA_VISIBLE_DEVICES=1 python run_painterly_render.py -c diffsketcher-color.yaml -eval_step 10 -save_step 10 -update "token_ind=4 num_paths=2000 num_iter=3000" -pt "portrait of latin woman having a spiritual awaking, eyes closed, slight smile, illuminating lights, oil painting, by Van Gogh" -respath ./workdir/portrait_oil -rdbz
+  -d 676955
 ```
 
 ### Colorful Results
