@@ -1,6 +1,8 @@
 # DiffSketcher: Text Guided Vector Sketch Synthesis through Latent Diffusion Models
 
-[![NeurIPS](https://img.shields.io/badge/NeurIPS-2023-98E4FF.svg)](https://arxiv.org/abs/2306.14685) [![arXiv](https://img.shields.io/badge/arXiv-2306.14685-b31b1b.svg)](https://arxiv.org/abs/2306.14685)
+[![NeurIPS](https://img.shields.io/badge/NeurIPS-2023-98E4FF.svg)](https://openreview.net/attachment?id=CY1xatvEQj&name=pdf) 
+[![arXiv](https://img.shields.io/badge/arXiv-2306.14685-b31b1b.svg)](https://arxiv.org/abs/2306.14685)
+[![website](https://img.shields.io/badge/website-Gitpage-yellow)](https://ximinng.github.io/DiffSketcher-project/)
 
 This repository contains our official implementation of the NeurIPS 2023 paper: DiffSketcher: Text Guided Vector Sketch
 Synthesis through Latent Diffusion Models, which can generate high-quality vector sketches based on text prompts. Our
@@ -10,16 +12,20 @@ project page can be found [here](https://ximinng.github.io/DiffSketcher-project/
 
 ## :new: Update
 
+- [01/2024] 🔥 **We released the [SVGDreamer](https://ximinng.github.io/SVGDreamer-project/). SVGDreamer is
+  a novel text-guided vector graphics synthesis method. This method considers both the editing of vector graphics and
+  the quality of the synthesis.**
 - [12/2023] 🔥 **We released the [PyTorch-SVGRender](https://github.com/ximinng/PyTorch-SVGRender). Pytorch-SVGRender is
   the go-to library for state-of-the-art differentiable rendering methods for image vectorization.**
-- [11/2023] We thank [@camenduru](https://github.com/camenduru) for implementing the [DiffSketcher-colab](https://github.com/camenduru/DiffSketcher-colab).
+- [11/2023] We thank [@camenduru](https://github.com/camenduru) for implementing
+  the [DiffSketcher-colab](https://github.com/camenduru/DiffSketcher-colab).
 - [10/2023] We released the DiffSketcher code.
 - [10/2023] We released the [VectorFusion code](https://github.com/ximinng/VectorFusion-pytorch).
 
 ### TODO
 
 - [ ] Add a webUI demo.
-- [ ] Add support for colorful results and oil painting.
+- [x] Add support for colorful results and oil painting.
 
 ## :wrench: Installation
 
@@ -136,9 +142,47 @@ python run_painterly_render.py \
   --download
 ```
 
-### More Examples
+### More Sketch Examples
 
 **check the [run.md](https://github.com/ximinng/DiffSketcher/blob/main/run.md) for more scripts.**
+
+### Oil Painting
+
+Preview:
+
+![portrait_woman_oil_painting](./img/portrait_woman_oil_painting.svg)
+
+Script:
+
+```shell
+python run_painterly_render.py \
+  -c diffsketcher-color.yaml \
+  -eval_step 10 -save_step 10 \
+  -update "token_ind=4 num_paths=2000 num_iter=1500" \
+  -pt "portrait of latin woman having a spiritual awaking, eyes closed, slight smile, illuminating lights, oil painting, by Van Gogh" \
+  -respath ./workdir/portrait_woman_oil_painting \
+  -d 998
+ 
+CUDA_VISIBLE_DEVICES=1 python run_painterly_render.py -c diffsketcher-color.yaml -eval_step 10 -save_step 10 -update "token_ind=4 num_paths=2000 num_iter=3000" -pt "portrait of latin woman having a spiritual awaking, eyes closed, slight smile, illuminating lights, oil painting, by Van Gogh" -respath ./workdir/portrait_oil -rdbz
+```
+
+### Colorful Results
+
+Preview:
+
+![horse_rgba](./img/horse_rgba.svg)
+
+Script:
+
+```shell
+python run_painterly_render.py \
+  -c diffsketcher-color.yaml \
+  -eval_step 10 -save_step 10 \
+  -update "token_ind=2 num_paths=128 num_iter=1500" \
+  -pt "A horse is drinking water by the lake" \
+  -respath ./workdir/draw_horse_rgba \
+  -d 998
+```
 
 ## :books: Acknowledgement
 

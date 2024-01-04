@@ -152,6 +152,7 @@ class DiffSketcherPipeline(ModelState):
                 cross_attn_map = cross_attn_map.reshape(self.args.image_size, self.args.image_size)
             # to [0, 1]
             cross_attn_map = (cross_attn_map - cross_attn_map.min()) / (cross_attn_map.max() - cross_attn_map.min())
+
             """ldm self-attention map"""
             self_attention_maps, svd, vh_ = \
                 self.diffusion.get_self_attention_comp([prompts],
@@ -459,7 +460,7 @@ class DiffSketcherPipeline(ModelState):
             from subprocess import call
             call([
                 "ffmpeg",
-                "-framerate", 24,
+                "-framerate", '24',
                 "-i", (self.png_logs_dir / "frame%d.png").as_posix(),
                 "-vb", "20M",
                 (self.results_path / "out.mp4").as_posix()
