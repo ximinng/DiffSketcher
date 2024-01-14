@@ -1,4 +1,3 @@
-seed: 1
 image_size: 224
 path_svg: ~ # if you want to load a svg file and train from it
 mask_object: False # if the target image contains background, it's better to mask it out

@@ -7,14 +7,15 @@
 This repository contains our official implementation of the NeurIPS 2023 paper: DiffSketcher: Text Guided Vector Sketch
 Synthesis through Latent Diffusion Models, which can generate high-quality vector sketches based on text prompts.
 
-> Our project page can be found [here](https://ximinng.github.io/DiffSketcher-project/).
+> Our Project Page: https://ximinng.github.io/DiffSketcher-project/
 
 ![teaser1](./img/teaser1.png)
 ![teaser2](./img/teaser2.png)
+
 **DiffSketcher Rendering Process:**
 
-| <img src="./img/0.gif" style="width: 200px; height: 200px;"> | <img src="./img/1.gif" style="width: 200px; height: 200px;"> | <img src="./img/2.gif" style="width: 200px; height: 200px;"> |
-| --- | --- |--------------------------------------------------------------|
+| <img src="./img/0.gif" style="width: 200px; height: 200px;">            | <img src="./img/1.gif" style="width: 200px; height: 200px;">                | <img src="./img/2.gif" style="width: 200px; height: 200px;"> |
+|-------------------------------------------------------------------------|-----------------------------------------------------------------------------|--------------------------------------------------------------|
 | Prompt: Macaw full color, ultra detailed, realistic, insanely beautiful | Prompt: Very detailed masterpiece painting of baby yoda hoding a lightsaber | Prompt: Sailboat sailing in the sea on a clear day           |
 
 ## :new: Update
@@ -28,11 +29,6 @@ Synthesis through Latent Diffusion Models, which can generate high-quality vecto
   the [DiffSketcher-colab](https://github.com/camenduru/DiffSketcher-colab).
 - [10/2023] We released the DiffSketcher code.
 - [10/2023] We released the [VectorFusion code](https://github.com/ximinng/VectorFusion-pytorch).
-
-### TODO
-
-- [ ] Add a webUI demo.
-- [x] Add support for colorful results and oil painting.
 
 ## :wrench: Installation
 
@@ -124,7 +120,8 @@ optional:
 
 - `-npt`, a.k.a `--negative_prompt`: negative text prompt.
 - `-mv`, a.k.a `--make_video`: make a video of the rendering process (**it will take much longer**).
-- `-frame_freq`, a.k.a `--video_frame_freq`: control video frame.
+- `-frame_freq`, a.k.a `--video_frame_freq`: the interval of the number of steps to save the image.
+- `-framerate`, a.k.a `--video_frame_rate`: control the playback speed of the output video.
 - **Note:** [Download](https://huggingface.co/akhaliq/CLIPasso/blob/main/u2net.pth) U2Net model and place
   in `checkpoint/` dir if `xdog_intersec=True`
 - add `enable_xformers=True` in `-update` to enable xformers for speeding up.
@@ -175,7 +172,7 @@ python run_painterly_render.py \
 
 Preview:
 
-![horse_rgba](./img/horse_rgba.svg)
+![horse_rgba](./img/sydney_opera_house_rgba.svg)
 
 Script:
 
@@ -183,11 +180,41 @@ Script:
 python run_painterly_render.py \
   -c diffsketcher-color.yaml \
   -eval_step 10 -save_step 10 \
-  -update "token_ind=2 num_paths=128 num_iter=1500" \
-  -pt "A horse is drinking water by the lake" \
-  -respath ./workdir/draw_horse_rgba \
-  -d 998
+  -update "token_ind=4 num_paths=1000 num_iter=3000" \
+  -pt "a photo of Sydney opera house" \
+  -respath ./workdir/sydney_opera_house_rgba \
+  -d 549193 
 ```
+
+### Style Transfer
+
+Preview:
+
+| <img src="./img/starry.jpg" style="width: 250px; height: 250px;"> | <img src="./img/french_ST.svg" style="width: 250px; height: 250px;"> |
+|-------------------------------------------------------------------|----------------------------------------------------------------------|
+| Style Image                                                       | Result                                                               |
+
+Script:
+
+```shell
+python run_painterly_render.py \ 
+  -tk style-diffsketcher -c diffsketcher-style.yaml \
+  -eval_step 10 -save_step 10 \
+  -update "token_ind=4 num_paths=2000 style_warmup=0 style_strength=1 softmax_temp=0.4 sds.grad_scale=0 lr_scheduler=True num_iter=2000" \
+  -pt "The French Revolution, highly detailed, 8k, ornate, intricate, cinematic, dehazed, atmospheric, oil painting, by Van Gogh" \
+  -style ./img/starry.jpg \
+  -respath ./workdir/style_transfer \
+  -d 876809
+```
+
+- `-style`: the path of style img place.
+- `style_warmup`:  add style loss after `style_warmup` step.
+- `style_strength`:  How strong the style should be. 100 (max) is a lot. 0 (min) is no style.
+
+### TODO
+
+- [ ] Add a webUI demo.
+- [x] Add support for colorful results and oil painting.
 
 ## :books: Acknowledgement
 

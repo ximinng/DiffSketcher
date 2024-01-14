@@ -2,9 +2,11 @@
 # Copyright (c) XiMing Xing. All rights reserved.
 # Author: XiMing Xing
 # Description:
+import shutil
 import pathlib
 from PIL import Image
 from functools import partial
+from pathlib import Path
 
 import torch
 import torch.nn.functional as F
@@ -22,16 +24,17 @@ from libs.metric.clip_score import CLIPScoreWrapper
 from methods.painter.diffsketcher import (
     Painter, SketchPainterOptimizer, Token2AttnMixinASDSPipeline, Token2AttnMixinASDSSDXLPipeline)
 from methods.painter.diffsketcher.sketch_utils import (
-    log_tensor_img, plt_batch, plt_attn, save_tensor_img, fix_image_scale)
+    log_tensor_img, plt_triplet, plt_attn, save_tensor_img, fix_image_scale
+)
 from methods.painter.diffsketcher.mask_utils import get_mask_u2net
 from methods.token2attn.attn_control import AttentionStore, EmptyControl
 from methods.token2attn.ptp_utils import view_images
+from methods.painter.diffsketcher.strotss import sample_indices, StyleLoss, VGG16Extractor
 from methods.diffusers_warp import init_diffusion_pipeline, model2res
 from methods.diffvg_warp import init_diffvg
-from methods.painter.diffsketcher.process_svg import remove_low_opacity_paths
 
 
-class DiffSketcherPipeline(ModelState):
+class StylizedDiffSketcherPipeline(ModelState):
 
     def __init__(self, args):
         attn_log_ = ""
@@ -40,6 +43,7 @@ class DiffSketcherPipeline(ModelState):
                         f"{'-XDoG' if args.xdog_intersec else ''}" \
                         f"-atc{args.attn_coeff}-tau{args.softmax_temp}"
         logdir_ = f"sd{args.seed}-im{args.image_size}" \
+                  f"-ST{args.style_strength}" \
                   f"-P{args.num_paths}W{args.width}{'OP' if args.optim_opacity else 'BL'}" \
                   f"{attn_log_}"
         super().__init__(args, log_path_suffix=logdir_)
@@ -101,24 +105,21 @@ class DiffSketcherPipeline(ModelState):
                                               feats_loss_weights=self.cargs.feats_loss_weights,
                                               fc_loss_weight=self.cargs.fc_loss_weight)
 
-    def load_render(self, target_img, attention_map, mask=None):
-        renderer = Painter(self.args,
-                           num_strokes=self.args.num_paths,
-                           num_segments=self.args.num_segments,
-                           imsize=self.args.image_size,
-                           device=self.device,
-                           target_im=target_img,
-                           attention_map=attention_map,
-                           mask=mask)
-        return renderer
+        # load STROTSS
+        self.style_extractor = VGG16Extractor(space="normal").to(self.device)
+        self.style_loss = StyleLoss()
 
     def extract_ldm_attn(self, prompts):
+        # log prompts
+        self.print(f"prompt: {prompts}")
+        self.print(f"negative_prompt: {self.args.negative_prompt}\n")
+
         # init controller
         controller = AttentionStore() if self.args.attention_init else EmptyControl()
 
         height = width = model2res(self.args.model_id)
         outputs = self.diffusion(prompt=[prompts],
-                                 negative_prompt=[self.args.negative_prompt],
+                                 negative_prompt=self.args.negative_prompt,
                                  height=height,
                                  width=width,
                                  controller=controller,
@@ -183,6 +184,8 @@ class DiffSketcherPipeline(ModelState):
             self_attn_vis = np.copy(self_attn)
             self_attn_vis = self_attn_vis * 255
             self_attn_vis = np.repeat(np.expand_dims(self_attn_vis, axis=2), 3, axis=2).astype(np.uint8)
+            self_attn_vis = Image.fromarray(self_attn_vis)
+            self_attn_vis = np.array(self_attn_vis)
             view_images(self_attn_vis, save_image=True, fp=self.results_path / "self-attn-final.png")
 
             """attention map fusion"""
@@ -230,13 +233,7 @@ class DiffSketcherPipeline(ModelState):
         ys = torch.cat(y_augs, dim=0)
         return xs, ys
 
-    def painterly_rendering(self, prompt: str):
-        # log prompts
-        self.print(f"prompt: {prompt}")
-        self.print(f"negative_prompt: {self.args.negative_prompt}\n")
-        if self.args.negative_prompt is None:
-            self.args.negative_prompt = ""
-
+    def painterly_rendering(self, prompt: str, style_fpath: str):
         # init attention
         target_file, attention_map = self.extract_ldm_attn(prompt)
 
@@ -250,6 +247,8 @@ class DiffSketcherPipeline(ModelState):
                 perceptual_loss_fn = partial(lpips_loss_fn.forward, return_per_layer=False, normalize=False)
             elif self.args.perceptual.name == "dists":
                 perceptual_loss_fn = DISTS_PIQ()
+
+        style_img, feat_style = self.load_and_process_style_file(style_fpath)
 
         inputs, mask = self.get_target(target_file,
                                        self.args.image_size,
@@ -270,7 +269,6 @@ class DiffSketcherPipeline(ModelState):
                            target_im=inputs,
                            attention_map=attention_map,
                            mask=mask)
-
         # init img
         img = renderer.init_image(stage=0)
         self.print("init_image shape: ", img.shape)
@@ -288,7 +286,7 @@ class DiffSketcherPipeline(ModelState):
         # log params
         self.print(f"-> Painter points Params: {len(renderer.get_points_params())}")
         self.print(f"-> Painter width Params: {len(renderer.get_width_parameters())}")
-        self.print(f"-> Painter opacity Params: {len(renderer.get_color_parameters())}")
+        self.print(f"-> Painter color Params: {len(renderer.get_color_parameters())}")
 
         best_visual_loss, best_semantic_loss = 100, 100
         best_iter_v, best_iter_s = 0, 0
@@ -314,7 +312,7 @@ class DiffSketcherPipeline(ModelState):
                         crop_size=self.args.sds.crop_size,
                         augments=self.args.sds.augmentations,
                         prompt=[self.args.prompt],
-                        negative_prompt=[self.args.negative_prompt],
+                        negative_prompt=self.args.negative_prompt,
                         guidance_scale=self.args.sds.guidance_scale,
                         grad_scale=grad_scale,
                         t_range=list(self.args.sds.t_range),
@@ -338,12 +336,6 @@ class DiffSketcherPipeline(ModelState):
                     clip_conv_loss_sum = sum(l_clip_conv)
                     total_visual_loss = self.args.clip.vis_loss * (clip_conv_loss_sum + l_clip_fc)
 
-                # perceptual loss
-                l_percep = torch.tensor(0.)
-                if perceptual_loss_fn is not None:
-                    l_perceptual = perceptual_loss_fn(raster_sketch, inputs).mean()
-                    l_percep = l_perceptual * self.args.perceptual.coeff
-
                 # text-visual loss
                 l_tvd = torch.tensor(0.)
                 if self.cargs.text_visual_coeff > 0:
@@ -351,16 +343,30 @@ class DiffSketcherPipeline(ModelState):
                         raster_sketch_aug, self.args.prompt
                     ) * self.cargs.text_visual_coeff
 
+                # perceptual loss
+                l_percep = torch.tensor(0.)
+                if perceptual_loss_fn is not None:
+                    l_perceptual = perceptual_loss_fn(raster_sketch, inputs).mean()
+                    l_percep = l_perceptual * self.args.perceptual.coeff
+
+                # style loss
+                l_style = torch.tensor(0.)
+                if self.step >= self.args.style_warmup:
+                    feat_content = self.style_extractor(raster_sketch)
+                    xx, xy = sample_indices(feat_content[0], feat_style)
+                    np.random.shuffle(xx)
+                    np.random.shuffle(xy)
+                    l_style = self.args.style_strength * self.style_loss.forward(
+                        feat_content, feat_content, feat_style, [xx, xy], 0
+                    )
+
                 # total loss
-                loss = sds_loss + total_visual_loss + l_percep + l_tvd
+                loss = sds_loss + total_visual_loss + l_tvd + l_percep + l_style
 
                 # optimization
                 optimizer.zero_grad_()
                 loss.backward()
                 optimizer.step_()
-
-                # if self.step % self.args.pruning_freq == 0:
-                #     renderer.path_pruning()
 
                 # update lr
                 if self.args.lr_scheduler:
@@ -374,18 +380,20 @@ class DiffSketcherPipeline(ModelState):
                     f"l_clip_conv({len(l_clip_conv)}): {clip_conv_loss_sum.item():.4f}, "
                     f"l_tvd: {l_tvd.item():.4f}, "
                     f"l_percep: {l_percep.item():.4f}, "
+                    f"l_style: {l_style.item():.4f}, "
                     f"sds: {grad.item():.4e}"
                 )
 
                 # log raster and svg
                 if self.step % self.args.save_step == 0 and self.accelerator.is_main_process:
                     # log png
-                    plt_batch(inputs,
-                              raster_sketch,
-                              self.step,
-                              prompt,
-                              save_path=self.png_logs_dir.as_posix(),
-                              name=f"iter{self.step}")
+                    plt_triplet(inputs,
+                                raster_sketch,
+                                style_img,
+                                self.step,
+                                prompt,
+                                save_path=self.png_logs_dir.as_posix(),
+                                name=f"iter{self.step}")
                     # log svg
                     renderer.save_svg(self.svg_logs_dir.as_posix(), f"svg_iter{self.step}")
                     # log cross attn
@@ -410,12 +418,13 @@ class DiffSketcherPipeline(ModelState):
                         if abs(cur_delta) > min_delta and cur_delta < 0:
                             best_visual_loss = loss_eval.item()
                             best_iter_v = self.step
-                            plt_batch(inputs,
-                                      raster_sketch,
-                                      best_iter_v,
-                                      prompt,
-                                      save_path=self.results_path.as_posix(),
-                                      name="visual_best")
+                            plt_triplet(inputs,
+                                        raster_sketch,
+                                        style_img,
+                                        best_iter_v,
+                                        prompt,
+                                        save_path=self.results_path.as_posix(),
+                                        name="visual_best")
                             renderer.save_svg(self.results_path.as_posix(), "visual_best")
 
                         # semantic metric
@@ -426,15 +435,16 @@ class DiffSketcherPipeline(ModelState):
                         if abs(cur_delta) > min_delta and cur_delta < 0:
                             best_semantic_loss = loss_eval.item()
                             best_iter_s = self.step
-                            plt_batch(inputs,
-                                      raster_sketch,
-                                      best_iter_s,
-                                      prompt,
-                                      save_path=self.results_path.as_posix(),
-                                      name="semantic_best")
+                            plt_triplet(inputs,
+                                        raster_sketch,
+                                        style_img,
+                                        best_iter_s,
+                                        prompt,
+                                        save_path=self.results_path.as_posix(),
+                                        name="semantic_best")
                             renderer.save_svg(self.results_path.as_posix(), "semantic_best")
 
-                # log attention
+                # log attention, for once
                 if self.step == 0 and self.args.attention_init and self.accelerator.is_main_process:
                     plt_attn(renderer.get_attn(),
                              renderer.get_thresh(),
@@ -445,19 +455,13 @@ class DiffSketcherPipeline(ModelState):
                 self.step += 1
                 pbar.update(1)
 
-        # saving final svg
-        renderer.save_svg(self.svg_logs_dir.as_posix(), "final_svg_tmp")
-        # stroke pruning
-        if self.args.opacity_delta != 0:
-            remove_low_opacity_paths(self.svg_logs_dir / "final_svg_tmp.svg",
-                                     self.results_path / "final_svg.svg",
-                                     self.args.opacity_delta)
+        # saving final result
+        renderer.save_svg(self.results_path.as_posix(), f"final_best_step")
 
-        # save raster img
         final_raster_sketch = renderer.get_image().to(self.device)
         save_tensor_img(final_raster_sketch,
                         save_path=self.results_path,
-                        name='final_render')
+                        name=f"final_best_step")
 
         # convert the intermediate renderings to a video
         if self.args.make_video:
@@ -471,6 +475,38 @@ class DiffSketcherPipeline(ModelState):
             ])
 
         self.close(msg="painterly rendering complete.")
+
+    def load_and_process_style_file(self, style_fpath):
+        # load style file
+        style_path = Path(style_fpath)
+        assert style_path.exists(), f"{style_fpath} is not exist!"
+        style_img = self.style_file_preprocess(style_path.as_posix())
+        self.print(f"load style file from: {style_path.as_posix()}")
+        shutil.copy(style_fpath, self.results_path)  # copy style file
+
+        # extract style features from style image
+        feat_style = None
+        for i in range(5):
+            with torch.no_grad():
+                # r is region of interest (mask)
+                feat_e = self.style_extractor.forward_samples_hypercolumn(style_img, samps=1000)
+                feat_style = feat_e if feat_style is None else torch.cat((feat_style, feat_e), dim=2)
+
+        return style_img, feat_style
+
+    def style_file_preprocess(self, style_path):
+        process_comp = transforms.Compose([
+            transforms.Resize(size=(224, 224)),
+            transforms.ToTensor(),
+            # transforms.Lambda(lambda t: t - 0.5),
+            transforms.Lambda(lambda t: t.unsqueeze(0)),
+            # transforms.Lambda(lambda t: (t + 1) / 2),
+        ])
+
+        style_pil = Image.open(style_path).convert("RGB")  # open file
+        style_file = process_comp(style_pil)  # preprocess
+        style_file = style_file.to(self.device)
+        return style_file
 
     def get_target(self,
                    target_file,
@@ -501,6 +537,9 @@ class DiffSketcherPipeline(ModelState):
                 target = masked_im
             else:
                 self.print(f"'{u2net_path}' is not exist, disable mask target")
+
+        if fix_scale:
+            target = fix_image_scale(target)
 
         if fix_scale:
             target = fix_image_scale(target)

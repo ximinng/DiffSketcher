@@ -48,7 +48,16 @@ def main(args, seed_range):
             pipe.painterly_rendering(args.prompt)
         else:  # generate many SVG at once
             render_batch_fn(pipeline=DiffSketcherPipeline, prompt=args.prompt)
-    # TODO: support for more task
+
+    elif args.task == "style-diffsketcher":  # text2sketch + style transfer
+        from pipelines.painter.diffsketcher_stylized_pipeline import StylizedDiffSketcherPipeline
+
+        if not args.render_batch:
+            pipe = StylizedDiffSketcherPipeline(args)
+            pipe.painterly_rendering(args.prompt, args.style_file)
+        else:  # generate many SVG at once
+            render_batch_fn(pipeline=StylizedDiffSketcherPipeline, prompt=args.prompt, style_fpath=args.style_file)
+
 
 if __name__ == '__main__':
     parser = argparse.ArgumentParser(
@@ -58,14 +67,13 @@ if __name__ == '__main__':
     # flag
     parser.add_argument("-tk", "--task",
                         default="diffsketcher", type=str,
-                        choices=['diffsketcher'],
+                        choices=['diffsketcher', 'style-diffsketcher'],
                         help="choose a method.")
     # config
     parser.add_argument("-c", "--config",
                         required=True, type=str,
                         default="",
                         help="YAML/YML file for configuration.")
-    # TODO: data path
     parser.add_argument("-style", "--style_file",
                         default="", type=str,
                         help="the path of style img place.")
@@ -94,6 +102,10 @@ if __name__ == '__main__':
     parser.add_argument("-frame_freq", "--video_frame_freq",
                         default=1, type=int,
                         help="video frame control.")
+    parser.add_argument("-framerate", "--video_frame_rate",
+                        default=36, type=int,
+                        help="by adjusting the frame rate, you can control the playback speed of the output video.")
+
     args = parser.parse_args()
 
     # set the random seed range

@@ -47,14 +47,9 @@ Result:
 CUDA_VISIBLE_DEVICES=0 python run_painterly_render.py -c diffsketcher.yaml -eval_step 10 -save_step 10 -update "token_ind=4 num_paths=128 sds.grad_scale=0" -pt "A 3d single rose" -respath ./workdir/3d_rose -rdbz
 ```
 
-**oil painting (TODO)**
+Result:
 
-**ink and wash (TODO)**
-
-**one line art (TDO)**
-
-
-**style transfer (TODO)**
+![horse](./img/rose.svg)
 
 ---
 
