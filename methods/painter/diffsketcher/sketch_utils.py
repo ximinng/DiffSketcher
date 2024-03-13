@@ -105,7 +105,7 @@ def log_tensor_img(inputs, output_dir, output_prefix="input", norm=False, dpi=30
     plt.imshow(ndarr)
     plt.axis("off")
     plt.tight_layout()
-    plt.savefig(f"{output_dir}/{output_prefix}.png", dpi=dpi)
+    plt.savefig(f"{output_dir}/{output_prefix}.png", dpi=dpi, bbox_inches='tight')
     plt.close()
 
 

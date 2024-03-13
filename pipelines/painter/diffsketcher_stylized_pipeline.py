@@ -465,6 +465,7 @@ class StylizedDiffSketcherPipeline(ModelState):
 
         # convert the intermediate renderings to a video
         if self.args.make_video:
+            # ffmpeg -framerate 36 -i ./workdir/style_transfer/diffsketcher-style/sd876809-im224-ST1-P2000W1.5OP-tk4-atc1.0-tau0.4/frame_logs/iter%d.png -vb 20M out.mp4
             from subprocess import call
             call([
                 "ffmpeg",
