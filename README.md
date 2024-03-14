@@ -1,9 +1,9 @@
 # DiffSketcher: Text Guided Vector Sketch Synthesis through Latent Diffusion Models
 
-[![NeurIPS](https://img.shields.io/badge/NeurIPS-2023-98E4FF.svg)](https://openreview.net/attachment?id=CY1xatvEQj&name=pdf)
+[![NeurIPS](https://img.shields.io/badge/NeurIPS-2023-6420AA.svg)](https://openreview.net/attachment?id=CY1xatvEQj&name=pdf)
 [![ArXiv](https://img.shields.io/badge/arXiv-2306.14685-b31b1b.svg)](https://arxiv.org/abs/2306.14685)
-[![Website](https://img.shields.io/badge/Website-Gitpage-purple)](https://ximinng.github.io/DiffSketcher-project/)
-[![Demo](https://img.shields.io/badge/Demo-Gradio-yellow)](https://huggingface.co/spaces/SVGRender/DiffSketcher)
+[![Website](https://img.shields.io/badge/Website-Gitpage-4CCD99)](https://ximinng.github.io/DiffSketcher-project/)
+[![Demo](https://img.shields.io/badge/Demo-Gradio-F6995C)](https://huggingface.co/spaces/SVGRender/DiffSketcher)
 
 This repository contains our official implementation of the NeurIPS 2023 paper: DiffSketcher: Text Guided Vector Sketch
 Synthesis through Latent Diffusion Models, which can generate high-quality vector sketches based on text prompts.
