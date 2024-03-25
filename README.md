@@ -82,6 +82,12 @@ pip install svgwrite svgpathtools cssutils torch-tools
 python setup.py install
 ```
 
+or using docker,
+
+```shell
+docker run --name diffsketcher --gpus all -it --ipc=host ximingxing/svgrender:v1 /bin/bash
+```
+
 ## 🔥 Quickstart
 
 ### Example:
