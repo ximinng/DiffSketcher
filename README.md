@@ -33,6 +33,8 @@ Synthesis through Latent Diffusion Models, which can generate high-quality vecto
 
 ## :wrench: Installation
 
+### Step by step 
+
 Create a new conda environment:
 
 ```shell
@@ -82,7 +84,7 @@ pip install svgwrite svgpathtools cssutils torch-tools
 python setup.py install
 ```
 
-or using docker,
+### Docker Usage
 
 ```shell
 docker run --name diffsketcher --gpus all -it --ipc=host ximingxing/svgrender:v1 /bin/bash
