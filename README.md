@@ -98,7 +98,7 @@ docker run --name diffsketcher --gpus all -it --ipc=host ximingxing/svgrender:v1
 
 |                                    Attention Map                                     |                                   Control Points Init                                   |              Strokes Initialization              |                      100 step                      |                        500 step                        |
 |:------------------------------------------------------------------------------------:|:---------------------------------------------------------------------------------------:|:------------------------------------------------:|:--------------------------------------------------:|:------------------------------------------------------:|
-| <img src="./img/SydneyOperaHouse/attn-map.png" style="width: 200px; height: 200px;"> | <img src="./img/SydneyOperaHouse/points-init.png" style="width: 200px; height: 200px;"> | <img src="./img/SydneyOperaHouse/svg_iter0.svg"> | <img src="./img/SydneyOperaHouse/svg_iter100.svg"> | <img src="./img/SydneyOperaHouse/visual_best_96P.svg"> |
+| <img src="./img/SydneyOperaHouse/attn-map.png" style="width: 250px; height: 200px;"> | <img src="./img/SydneyOperaHouse/points-init.png" style="width: 250px; height: 200px;"> | <img src="./img/SydneyOperaHouse/svg_iter0.svg"> | <img src="./img/SydneyOperaHouse/svg_iter100.svg"> | <img src="./img/SydneyOperaHouse/visual_best_96P.svg"> |
 
 **From the abstract to the concrete:**
 
