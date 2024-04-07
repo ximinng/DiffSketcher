@@ -200,15 +200,15 @@ class Token2AttnMixinASDSPipeline(StableDiffusionPipeline):
         # 9. Run safety checker
         if not output_type == "latent":
             image = self.vae.decode(latents / self.vae.config.scaling_factor, return_dict=False)[0]
-            image, has_nsfw_concept = self.run_safety_checker(image, device, text_embeddings.dtype)
+            # image, has_nsfw_concept = self.run_safety_checker(image, device, text_embeddings.dtype)
         else:
             image = latents
-            has_nsfw_concept = None
+        has_nsfw_concept = None
 
         if has_nsfw_concept is None:
             do_denormalize = [True] * image.shape[0]
-        else:
-            do_denormalize = [not has_nsfw for has_nsfw in has_nsfw_concept]
+        # else:
+        #     do_denormalize = [not has_nsfw for has_nsfw in has_nsfw_concept]
 
         # 10. Convert to output_type
         image = self.image_processor.postprocess(image, output_type=output_type, do_denormalize=do_denormalize)

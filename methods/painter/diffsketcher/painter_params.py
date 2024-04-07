@@ -72,7 +72,8 @@ class Painter(nn.Module):
             # don't optimize on previous strokes
             self.optimize_flag = [False for i in range(len(self.shapes))]
             for i in range(self.strokes_per_stage):
-                stroke_color = torch.tensor([0.0, 0.0, 0.0, 1.0])
+                stroke_color = torch.FloatTensor(np.random.uniform(size=[4])) \
+                    if self.args.optim_rgba else torch.tensor([0.0, 0.0, 0.0, 1.0])
                 path = self.get_path()
                 self.shapes.append(path)
                 path_group = pydiffvg.ShapeGroup(shape_ids=torch.tensor([len(self.shapes) - 1]),
@@ -90,7 +91,8 @@ class Painter(nn.Module):
                 num_paths_exists = len(self.shapes)
 
             for i in range(num_paths_exists, self.num_paths):
-                stroke_color = torch.tensor([0.0, 0.0, 0.0, 1.0])
+                stroke_color = torch.FloatTensor(np.random.uniform(size=[4])) \
+                    if self.args.optim_rgba else torch.tensor([0.0, 0.0, 0.0, 1.0])
                 path = self.get_path()
                 self.shapes.append(path)
                 path_group = pydiffvg.ShapeGroup(shape_ids=torch.tensor([len(self.shapes) - 1]),

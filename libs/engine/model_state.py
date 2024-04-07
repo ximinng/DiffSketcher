@@ -139,7 +139,7 @@ class ModelState:
             print("\n***** Model State *****")
             if self.accelerator.distributed_type != "NO":
                 print(f"-> Distributed Type: {self.accelerator.distributed_type}")
-            print(f"-> Split Batch Size: {split_batches}, Total Batch Size: {self.actual_batch_size}")
+            # print(f"-> Split Batch Size: {split_batches}, Total Batch Size: {self.actual_batch_size}")
             print(f"-> Mixed Precision: {mixed_precision}, AMP: {self.accelerator.native_amp},"
                   f" Gradient Accumulate Step: {gradient_accumulate_step}")
             print(f"-> Weight dtype:  {self.weight_dtype}")

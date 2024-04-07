@@ -33,7 +33,7 @@ Synthesis through Latent Diffusion Models, which can generate high-quality vecto
 
 ## :wrench: Installation
 
-### Step by step 
+### Step by step
 
 Create a new conda environment:
 
@@ -92,21 +92,29 @@ docker run --name diffsketcher --gpus all -it --ipc=host ximingxing/svgrender:v1
 
 ## 🔥 Quickstart
 
-### Example:
+### Case: Sydney Opera House
 
-Preview:
+**Preview:**
 
-![sydney_opera_house](./img/sydney_opera_house.svg)
+|                                    Attention Map                                     |                                   Control Points Init                                   |              Strokes Initialization              |                      100 step                      |                        500 step                        |
+|:------------------------------------------------------------------------------------:|:---------------------------------------------------------------------------------------:|:------------------------------------------------:|:--------------------------------------------------:|:------------------------------------------------------:|
+| <img src="./img/SydneyOperaHouse/attn-map.png" style="width: 200px; height: 200px;"> | <img src="./img/SydneyOperaHouse/points-init.png" style="width: 200px; height: 200px;"> | <img src="./img/SydneyOperaHouse/svg_iter0.svg"> | <img src="./img/SydneyOperaHouse/svg_iter100.svg"> | <img src="./img/SydneyOperaHouse/visual_best_96P.svg"> |
 
-Script:
+**From the abstract to the concrete:**
+
+|                        16 Paths                        |                        36 Paths                        |                        48 Paths                        |                        96 Paths                        |                        128 Paths                        |
+|:------------------------------------------------------:|:------------------------------------------------------:|:------------------------------------------------------:|:------------------------------------------------------:|:-------------------------------------------------------:|
+| <img src="./img/SydneyOperaHouse/visual_best_16P.svg"> | <img src="./img/SydneyOperaHouse/visual_best_36P.svg"> | <img src="./img/SydneyOperaHouse/visual_best_48P.svg"> | <img src="./img/SydneyOperaHouse/visual_best_96P.svg"> | <img src="./img/SydneyOperaHouse/visual_best_128P.svg"> |
+
+**Script:**
 
 ```shell
-python run_painterly_render.py \ 
+python run_painterly_render.py \
   -c diffsketcher.yaml \
   -eval_step 10 -save_step 10 \
-  -update "token_ind=4 num_paths=96 sds.warmup=1000 num_iter=1500" \ 
-  -pt "a photo of Sydney opera house" \ 
-  -respath ./workdir/sydney_opera_house \ 
+  -update "token_ind=4 num_paths=96 num_iter=800" \
+  -pt "a photo of Sydney opera house" \
+  -respath ./workdir/sydney_opera_house \
   -d 8019 \
   --download
 ```
@@ -120,12 +128,12 @@ python run_painterly_render.py \
 - `-d` a.k.a `--seed`: random seed.
 - `--download`: download models from huggingface automatically **when you first run them**.
 
-crucial:
+**crucial:**
 
-- `-update "token_ind=2"` indicates the index of cross-attn maps to init strokes.
+- `-update "token_ind=4"` indicates the index of cross-attn maps to init strokes.
 - `-update "num_paths=96"` indicates the number of strokes.
 
-optional:
+**optional:**
 
 - `-npt`, a.k.a `--negative_prompt`: negative text prompt.
 - `-mv`, a.k.a `--make_video`: make a video of the rendering process (**it will take much longer**).
@@ -136,74 +144,112 @@ optional:
 - add `enable_xformers=True` in `-update` to enable xformers for speeding up.
 - add `gradient_checkpoint=True` in `-update` to use gradient checkpoint for low VRAM.
 
-### Another example
+### Case: Sydney Opera House in ink painting style
 
-Preview:
+**Preview:**
 
-![sydney_opera_house](./img/sydney_opera_house_width.svg)
+| <img src="./img/SydneyOperaHouse-ink/svg_iter0.svg"> | <img src="./img/SydneyOperaHouse-ink/svg_iter100.svg"> | <img src="./img/SydneyOperaHouse-ink/visual_best.svg"> |
+|------------------------------------------------------|--------------------------------------------------------|--------------------------------------------------------|
+| Strokes Initialization                               | 100 step                                               | 990 step                                               |
 
-Script:
+**Script:**
 
 ```shell
-python run_painterly_render.py \ 
+python run_painterly_render.py \
   -c diffsketcher-width.yaml \
   -eval_step 10 -save_step 10 \
-  -update "token_ind=4 num_paths=48 num_iter=500" \ 
-  -pt "a photo of Sydney opera house" \ 
-  -respath ./workdir/sydney_opera_house \ 
+  -update "token_ind=4 num_paths=48 num_iter=800" \
+  -pt "a photo of Sydney opera house" \
+  -respath ./workdir/sydney_opera_house_ink \
   -d 8019 \
   --download
 ```
 
-### More Sketch Examples
-
-**check the [run.md](https://github.com/ximinng/DiffSketcher/blob/main/run.md) for more scripts.**
-
 ### Oil Painting
 
-Preview:
+**Preview:**
 
-![portrait_woman_oil_painting](./img/portrait_woman_oil_painting.svg)
+| <img src="./img/WomanWithCrown/svg_iter0.svg"> | <img src="./img/WomanWithCrown/svg_iter100.svg"> | <img src="./img/WomanWithCrown/visual_best.svg"> |
+|------------------------------------------------|--------------------------------------------------|--------------------------------------------------|
+| Strokes Initialization                         | 100 step                                         | 570 step                                         |
 
-Script:
+**Script:**
 
 ```shell
 python run_painterly_render.py \
   -c diffsketcher-color.yaml \
   -eval_step 10 -save_step 10 \
-  -update "token_ind=4 num_paths=2000 num_iter=1500" \
-  -pt "portrait of latin woman having a spiritual awaking, eyes closed, slight smile, illuminating lights, oil painting, by Van Gogh" \
-  -respath ./workdir/portrait_woman_oil_painting \
-  -d 676955
+  -update "token_ind=5 num_paths=1000 num_iter=1000 guidance_scale=7.5" \
+  -pt "a painting of a woman with a crown on her head, art station front page, dynamic portrait style, many colors in the background, olpntng style, oil painting, forbidden beauty" \
+  -npt "2 heads, 2 faces, cropped image, out of frame, draft, deformed hands, twisted fingers, double image, malformed hands, multiple heads, extra limb, ugly, poorly drawn hands, missing limb, disfigured, cut-off, ugly, grain, low-res, Deformed, blurry, bad anatomy, disfigured, poorly drawn face, mutation, mutated, floating limbs, disconnected limbs, disgusting, poorly drawn, mutilated, mangled, extra fingers, duplicate artifacts, morbid, gross proportions, missing arms, mutated hands, mutilated hands, cloned face, malformed, blur haze" \
+  -respath ./workdir/woman_with_crown_select -d 178351
+```
+
+**Preview:**
+
+| <img src="./img/BeautifulGirl_OilPainting/svg_iter0.svg"> | <img src="./img/BeautifulGirl_OilPainting/svg_iter100.svg"> | <img src="./img/BeautifulGirl_OilPainting/visual_best.svg"> |
+|-----------------------------------------------------------|-------------------------------------------------------------|-------------------------------------------------------------|
+| Strokes Initialization                                    | 100 step                                                    | 420 step                                                    |
+
+**Script:**
+
+```shell
+python run_painterly_render.py \
+  -c diffsketcher-color.yaml \
+  -eval_step 10 -save_step 10 \
+  -update "token_ind=5 num_paths=1000 num_iter=1000 guidance_scale=7.5" \
+  -pt "a painting of a woman with a crown on her head, art station front page, dynamic portrait style, many colors in the background, olpntng style, oil painting, forbidden beauty" \
+  -npt "2 heads, 2 faces, cropped image, out of frame, draft, deformed hands, twisted fingers, double image, malformed hands, multiple heads, extra limb, ugly, poorly drawn hands, missing limb, disfigured, cut-off, ugly, grain, low-res, Deformed, blurry, bad anatomy, disfigured, poorly drawn face, mutation, mutated, floating limbs, disconnected limbs, disgusting, poorly drawn, mutilated, mangled, extra fingers, duplicate artifacts, morbid, gross proportions, missing arms, mutated hands, mutilated hands, cloned face, malformed, blur haze" \
+  -respath ./workdir/woman_with_crown_select -d 178351
 ```
 
 ### Colorful Results
 
-Preview:
+**Preview:**
 
-![horse_rgba](./img/sydney_opera_house_rgba.svg)
+| <img src="./img/castle-rgba/svg_iter0.svg"> | <img src="./img/castle-rgba/svg_iter100.svg"> | <img src="./img/castle-rgba/visual_best.svg"> |
+|---------------------------------------------|-----------------------------------------------|-----------------------------------------------|
+| Strokes Initialization                      | 100 step                                      | 340 step                                      |
 
-Script:
+**Script:**
 
 ```shell
 python run_painterly_render.py \
   -c diffsketcher-color.yaml \
   -eval_step 10 -save_step 10 \
-  -update "token_ind=4 num_paths=1000 num_iter=3000" \
-  -pt "a photo of Sydney opera house" \
-  -respath ./workdir/sydney_opera_house_rgba \
-  -d 549193 
+  -update "token_ind=5 num_paths=1000 num_iter=800 guidance_scale=7" \
+  -pt "a beautiful snow-covered castle, a stunning masterpiece, trees, rays of the sun, Leonid Afremov" \
+  -npt "poorly drawn hands, poorly drawn feet, poorly drawn face, out of frame, extra limbs, disfigured, deformed, body out of frame, bad anatomy, watermark, signature, cut off, low contrast, underexposed, overexposed, bad art, beginner, amateur, distorted face" \
+  -respath ./workdir/castle -d 370880
+```
+
+**Preview:**
+
+| <img src="./img/castle-rgba-2/svg_iter0.svg"> | <img src="./img/castle-rgba-2/svg_iter100.svg"> | <img src="./img/castle-rgba-2/visual_best.svg"> |
+|-----------------------------------------------|-------------------------------------------------|-------------------------------------------------|
+| Strokes Initialization                        | 100 step                                        | 850 step                                        |
+
+**Script:**
+
+```shell
+python run_painterly_render.py \
+  -c diffsketcher-color.yaml \
+  -eval_step 10 -save_step 10 \
+  -update "token_ind=5 num_paths=1000 num_iter=800 guidance_scale=7" \
+  -pt "a beautiful snow-covered castle, a stunning masterpiece, trees, rays of the sun, Leonid Afremov" \
+  -npt "poorly drawn hands, poorly drawn feet, poorly drawn face, out of frame, extra limbs, disfigured, deformed, body out of frame, bad anatomy, watermark, signature, cut off, low contrast, underexposed, overexposed, bad art, beginner, amateur, distorted face" \
+  -respath ./workdir/castle -d 478376
 ```
 
 ### Style Transfer
 
-Preview:
+**Preview:**
 
 | <img src="./img/starry.jpg" style="width: 250px; height: 250px;"> | <img src="./img/french_ST.svg" style="width: 250px; height: 250px;"> |
 |-------------------------------------------------------------------|----------------------------------------------------------------------|
 | Style Image                                                       | Result                                                               |
 
-Script:
+**Script:**
 
 ```shell
 python run_painterly_render.py \ 
@@ -219,6 +265,10 @@ python run_painterly_render.py \
 - `-style`: the path of style img place.
 - `style_warmup`:  add style loss after `style_warmup` step.
 - `style_strength`:  How strong the style should be. 100 (max) is a lot. 0 (min) is no style.
+
+### More Sketch Results
+
+**check the [Examples.md](https://github.com/ximinng/DiffSketcher/blob/main/Examples.md) for more cases.**
 
 ### TODO
 

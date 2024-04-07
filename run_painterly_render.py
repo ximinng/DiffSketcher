@@ -38,6 +38,8 @@ def render_batch_wrap(args: omegaconf.DictConfig,
 def main(args, seed_range):
     args.batch_size = 1  # rendering one SVG at a time
 
+    args.width = float(args.width)
+
     render_batch_fn = partial(render_batch_wrap, args=args, seed_range=seed_range)
 
     if args.task == "diffsketcher":  # text2sketch

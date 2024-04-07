@@ -1,4 +1,4 @@
-# RUN Scripts
+# Qualitative Results
 
 ## # DiffSketcher:
 
@@ -241,4 +241,3 @@ CUDA_VISIBLE_DEVICES=0 python run_painterly_render.py \
 You will get the following result:
 
 ![mushroom](./img/mushroom.svg)
-```

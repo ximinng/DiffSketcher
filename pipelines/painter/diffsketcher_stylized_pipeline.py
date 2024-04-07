@@ -237,9 +237,6 @@ class StylizedDiffSketcherPipeline(ModelState):
         # init attention
         target_file, attention_map = self.extract_ldm_attn(prompt)
 
-        timesteps_ = self.diffusion.scheduler.timesteps.cpu().numpy().tolist()
-        self.print(f"{len(timesteps_)} denoising steps, {timesteps_}")
-
         perceptual_loss_fn = None
         if self.args.perceptual.coeff > 0:
             if self.args.perceptual.name == "lpips":
