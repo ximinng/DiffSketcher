@@ -148,9 +148,9 @@ python run_painterly_render.py \
 
 **Preview:**
 
-| <img src="./img/SydneyOperaHouse-ink/svg_iter0.svg"> | <img src="./img/SydneyOperaHouse-ink/svg_iter100.svg"> | <img src="./img/SydneyOperaHouse-ink/visual_best.svg"> |
-|------------------------------------------------------|--------------------------------------------------------|--------------------------------------------------------|
-| Strokes Initialization                               | 100 step                                               | 990 step                                               |
+| <img src="./img/SydneyOperaHouse-ink/svg_iter0.svg"> | <img src="./img/SydneyOperaHouse-ink/svg_iter100.svg"> | <img src="./img/SydneyOperaHouse-ink/svg_iter200.svg"> | <img src="./img/SydneyOperaHouse-ink/visual_best.svg"> |
+|------------------------------------------------------|--------------------------------------------------------|--------------------------------------------------------|--------------------------------------------------------|
+| Strokes Initialization                               | 100 step                                               | 200 step                                               | 990 step                                               |
 
 **Script:**
 
@@ -169,6 +169,24 @@ python run_painterly_render.py \
 
 **Preview:**
 
+| <img src="./img/LatinWomanPortrait/svg_iter0.svg"> | <img src="./img/LatinWomanPortrait/svg_iter100.svg"> | <img src="./img/LatinWomanPortrait/visual_best.svg"> |
+|----------------------------------------------------|------------------------------------------------------|------------------------------------------------------|
+| Strokes Initialization                             | 100 step                                             | 570 step                                             |
+
+**Script:**
+
+```shell
+python run_painterly_render.py \
+  -c diffsketcher-color.yaml \
+  -eval_step 10 -save_step 10 \
+  -update "token_ind=5 num_paths=1000 num_iter=1000 guidance_scale=7.5" \
+  -pt "portrait of latin woman having a spiritual awaking, eyes closed, slight smile, illuminating lights, oil painting, by Van Gogh" \
+  -npt "text, signature, title, heading, watermark, ugly, duplicate, morbid, mutilated, out of frame, extra fingers, mutated hands, poorly drawn hands, poorly drawn face, mutation, deformed, blurry, bad anatomy, bad proportions, extra limbs, cloned face, disfigured, out of frame, ugly, extra limbs, gross proportions, malformed limbs, missing arms, missing legs, extra arms, extra legs, mutated hands, fused fingers, too many fingers, long neck" \
+  -respath ./workdir/latin_woman_portrait -d 58548
+```
+
+**Preview:**
+
 | <img src="./img/WomanWithCrown/svg_iter0.svg"> | <img src="./img/WomanWithCrown/svg_iter100.svg"> | <img src="./img/WomanWithCrown/visual_best.svg"> |
 |------------------------------------------------|--------------------------------------------------|--------------------------------------------------|
 | Strokes Initialization                         | 100 step                                         | 570 step                                         |
@@ -182,7 +200,7 @@ python run_painterly_render.py \
   -update "token_ind=5 num_paths=1000 num_iter=1000 guidance_scale=7.5" \
   -pt "a painting of a woman with a crown on her head, art station front page, dynamic portrait style, many colors in the background, olpntng style, oil painting, forbidden beauty" \
   -npt "2 heads, 2 faces, cropped image, out of frame, draft, deformed hands, twisted fingers, double image, malformed hands, multiple heads, extra limb, ugly, poorly drawn hands, missing limb, disfigured, cut-off, ugly, grain, low-res, Deformed, blurry, bad anatomy, disfigured, poorly drawn face, mutation, mutated, floating limbs, disconnected limbs, disgusting, poorly drawn, mutilated, mangled, extra fingers, duplicate artifacts, morbid, gross proportions, missing arms, mutated hands, mutilated hands, cloned face, malformed, blur haze" \
-  -respath ./workdir/woman_with_crown_select -d 178351
+  -respath ./workdir/woman_with_crown -d 178351
 ```
 
 **Preview:**
@@ -200,7 +218,7 @@ python run_painterly_render.py \
   -update "token_ind=5 num_paths=1000 num_iter=1000 guidance_scale=7.5" \
   -pt "a painting of a woman with a crown on her head, art station front page, dynamic portrait style, many colors in the background, olpntng style, oil painting, forbidden beauty" \
   -npt "2 heads, 2 faces, cropped image, out of frame, draft, deformed hands, twisted fingers, double image, malformed hands, multiple heads, extra limb, ugly, poorly drawn hands, missing limb, disfigured, cut-off, ugly, grain, low-res, Deformed, blurry, bad anatomy, disfigured, poorly drawn face, mutation, mutated, floating limbs, disconnected limbs, disgusting, poorly drawn, mutilated, mangled, extra fingers, duplicate artifacts, morbid, gross proportions, missing arms, mutated hands, mutilated hands, cloned face, malformed, blur haze" \
-  -respath ./workdir/woman_with_crown_select -d 178351
+  -respath ./workdir/woman_with_crown -d 178351
 ```
 
 ### Colorful Results
@@ -252,7 +270,7 @@ python run_painterly_render.py \
 **Script:**
 
 ```shell
-python run_painterly_render.py \ 
+python run_painterly_render.py \
   -tk style-diffsketcher -c diffsketcher-style.yaml \
   -eval_step 10 -save_step 10 \
   -update "token_ind=4 num_paths=2000 style_warmup=0 style_strength=1 softmax_temp=0.4 sds.grad_scale=0 lr_scheduler=True num_iter=2000" \
