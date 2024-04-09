@@ -96,9 +96,9 @@ docker run --name diffsketcher --gpus all -it --ipc=host ximingxing/svgrender:v1
 
 **Preview:**
 
-|                                    Attention Map                                     |                                   Control Points Init                                   |              Strokes Initialization              |                      100 step                      |                        500 step                        |
-|:------------------------------------------------------------------------------------:|:---------------------------------------------------------------------------------------:|:------------------------------------------------:|:--------------------------------------------------:|:------------------------------------------------------:|
-| <img src="./img/SydneyOperaHouse/attn-map.png" style="width: 250px; height: 200px;"> | <img src="./img/SydneyOperaHouse/points-init.png" style="width: 250px; height: 200px;"> | <img src="./img/SydneyOperaHouse/svg_iter0.svg"> | <img src="./img/SydneyOperaHouse/svg_iter100.svg"> | <img src="./img/SydneyOperaHouse/visual_best_96P.svg"> |
+|                                    Attention Map                                     |                                   Control Points Init                                   |                                Strokes Initialization                                 |                                        100 step                                         |                                          500 step                                           |
+|:------------------------------------------------------------------------------------:|:---------------------------------------------------------------------------------------:|:-------------------------------------------------------------------------------------:|:---------------------------------------------------------------------------------------:|:-------------------------------------------------------------------------------------------:|
+| <img src="./img/SydneyOperaHouse/attn-map.png" style="width: 200px; height: 200px;"> | <img src="./img/SydneyOperaHouse/points-init.png" style="width: 200px; height: 200px;"> | <img src="./img/SydneyOperaHouse/svg_iter0.svg" style="width: 200px; height: 200px;"> | <img src="./img/SydneyOperaHouse/svg_iter100.svg" style="width: 200px; height: 200px;"> | <img src="./img/SydneyOperaHouse/visual_best_96P.svg" style="width: 200px; height: 200px;"> |
 
 **From the abstract to the concrete:**
 
@@ -259,13 +259,13 @@ python run_painterly_render.py \
   -respath ./workdir/castle -d 478376
 ```
 
-### Style Transfer
+### DiffSketcher + Style Transfer
 
 **Preview:**
 
-| <img src="./img/starry.jpg" style="width: 250px; height: 250px;"> | <img src="./img/french_ST.svg" style="width: 250px; height: 250px;"> |
-|-------------------------------------------------------------------|----------------------------------------------------------------------|
-| Style Image                                                       | Result                                                               |
+| <img src="./img/FrenchRevolution-ST/generated.png" style="width: 250px; height: 250px;"> | <img src="./img/starry.jpg" style="width: 250px; height: 250px;"> | <img src="./img/FrenchRevolution-ST/french_ST.svg" style="width: 250px; height: 250px;"> |
+|------------------------------------------------------------------------------------------|-------------------------------------------------------------------|------------------------------------------------------------------------------------------|
+| Generated sample                                                                         | Style Image                                                       | Result                                                                                   |
 
 **Script:**
 

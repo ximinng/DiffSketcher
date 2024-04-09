@@ -71,6 +71,6 @@ clip:
   vis_loss: 1 # 1 or 0 for use or disable clip visual loss
   text_visual_coeff: 0 # cosine similarity between text and img
 perceptual:
-  name: "lpips" # dists
+  name: "lpips" # dists, lpips
   lpips_net: 'vgg'
   coeff: 0.2

@@ -239,6 +239,7 @@ class StylizedDiffSketcherPipeline(ModelState):
 
         perceptual_loss_fn = None
         if self.args.perceptual.coeff > 0:
+            self.print(f"-> perceptual: {self.args.perceptual.name}")
             if self.args.perceptual.name == "lpips":
                 lpips_loss_fn = LPIPS(net=self.args.perceptual.lpips_net).to(self.device)
                 perceptual_loss_fn = partial(lpips_loss_fn.forward, return_per_layer=False, normalize=False)

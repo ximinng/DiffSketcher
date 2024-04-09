@@ -116,6 +116,7 @@ class CLIPScoreWrapper(nn.Module):
         image_features = self.model.encode_image(image)
         text_tokenize = self.tokenize_fn(text).to(self.device)
         text_features = self.model.encode_text(text_tokenize)
+        text_features = text_features.to(self.device)
 
         image_features_norm = image_features / image_features.norm(dim=-1, keepdim=True)
         text_features_norm = text_features / text_features.norm(dim=-1, keepdim=True)
