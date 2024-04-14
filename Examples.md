@@ -90,11 +90,19 @@ CUDA_VISIBLE_DEVICES=0 python run_painterly_render.py \
 
 ### Case: Fox
 
+**Preview:**
+
+| <img src="./img/Fox/svg_iter0.svg"> | <img src="./img/Fox/svg_iter100.svg"> | <img src="./img/Fox/visual_best.svg"> |
+|-------------------------------------|---------------------------------------|---------------------------------------|
+| Strokes Initialization              | 100 step                              | 1500 step                             |
+
+**Script:**
+
 ```shell
 CUDA_VISIBLE_DEVICES=0 python run_painterly_render.py \
 -c diffsketcher.yaml \
 -eval_step 10 -save_step 10 \
--update "token_ind=2 num_paths=64 softmax_temp=0.5 num_iter=2000" \
+-update "token_ind=2 num_paths=96 softmax_temp=0.5 num_iter=2000" \
 -pt "A fox is sitting on the sofa" \
 -respath ./workdir/fox \
 -d 9007
@@ -203,6 +211,10 @@ CUDA_VISIBLE_DEVICES=0 python run_painterly_render.py \
 ### Case: Dragon
 
 **Preview:**
+
+| <img src="./img/Dragon/svg_iter0.svg"> | <img src="./img/Dragon/svg_iter100.svg"> | <img src="./img/Dragon/visual_best.svg"> |
+|----------------------------------------|------------------------------------------|------------------------------------------|
+| Strokes Initialization                 | 100 step                                 | 1200 step                                |
 
 **Script:**
 
