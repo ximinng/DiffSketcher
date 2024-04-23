@@ -130,6 +130,12 @@ CUDA_VISIBLE_DEVICES=0 python run_painterly_render.py \
 
 ### Case: A cat on a bicycle
 
+**Preview:**
+
+| <img src="./img/cat_ride_bike/svg_iter0.svg"> | <img src="./img/cat_ride_bike/svg_iter100.svg"> | <img src="./img/cat_ride_bike/visual_best.svg"> |
+|-----------------------------------------------|-------------------------------------------------|-------------------------------------------------|
+| Strokes Initialization                        | 100 step                                        | 1800 step                                       |
+
 **Script:**
 
 ```shell
@@ -197,6 +203,14 @@ CUDA_VISIBLE_DEVICES=0 python run_painterly_render.py \
 ```
 
 ### Case: Bunny
+
+**Preview:**
+
+| <img src="./img/Bunny/svg_iter0.svg"> | <img src="./img/Bunny/svg_iter100.svg"> | <img src="./img/Bunny/visual_best.svg"> |
+|---------------------------------------|-----------------------------------------|-----------------------------------------|
+| Strokes Initialization                | 100 step                                | 670 step                                |
+
+**Script:**
 
 ```shell
 CUDA_VISIBLE_DEVICES=0 python run_painterly_render.py \
