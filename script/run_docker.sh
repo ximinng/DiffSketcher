@@ -4,7 +4,7 @@ set -e
 
 # Docker image and container name
 IMAGE_NAME="ximingxing/svgrender:v1"
-CONTAINER_NAME="svgdreamer"
+CONTAINER_NAME="diffsketcher"
 
 echo "==== 1. Pulling Docker image ===="
 docker pull $IMAGE_NAME
@@ -26,11 +26,15 @@ docker run --name $CONTAINER_NAME --gpus all -it --ipc=host -v $(pwd):/workspace
     pip install cairosvg
     apt update && apt install -y libcairo2-dev
 
-    echo '==== 5. Running SVGDreamer example ===='
-    python svgdreamer.py x=iconography skip_sive=False \\
-      \"prompt='an image of Batman. full body action pose, complete detailed body. white background. empty background, high quality, 4K, ultra realistic'\" \\
-      token_ind=4 x.vpsd.t_schedule='randint' \\
-      result_path='./logs/batman' multirun=True
+    echo '==== 5. Running DiffSketcher example ===='
+    python run_painterly_render.py \
+      -c diffsketcher.yaml \
+      -eval_step 10 -save_step 10 \
+      -update 'token_ind=4 num_paths=96 num_iter=800' \
+      -pt 'a photo of Sydney opera house' \
+      -respath ./workdir/sydney_opera_house \
+      -d 8019 \
+      --download
 "
 
-echo "==== SVGDreamer execution completed! ===="
+echo "==== DiffSketcher execution completed! ===="
