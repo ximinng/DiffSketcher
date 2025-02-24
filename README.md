@@ -47,6 +47,11 @@ chmod +x script/run_svgdreamer_docker.sh
 sudo bash script/run_svgdreamer_docker.sh
 ```
 
+> [!NOTE]
+> If you hit upon warning/errors of Compiler version 11 and more not being supported, install GCC and GXX 10.4.0 from conda-forge, then run the installation of diffvg
+> `conda install -c conda-forge gcc==10.4.0 gxx==10.4.0`
+
+
 ## 🔥 Quickstart
 
 ### Case: Sydney Opera House
