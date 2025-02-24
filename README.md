@@ -1,14 +1,9 @@
 # DiffSketcher: Text Guided Vector Sketch Synthesis through Latent Diffusion Models
 
-[![NeurIPS](https://img.shields.io/badge/NeurIPS-2023-6420AA.svg)](https://openreview.net/attachment?id=CY1xatvEQj&name=pdf)
-[![ArXiv](https://img.shields.io/badge/arXiv-2306.14685-b31b1b.svg)](https://arxiv.org/abs/2306.14685)
-[![Website](https://img.shields.io/badge/Website-Gitpage-4CCD99)](https://ximinng.github.io/DiffSketcher-project/)
-[![Demo](https://img.shields.io/badge/Demo-Gradio-F6995C)](https://huggingface.co/spaces/SVGRender/DiffSketcher)
+[![NeurIPS 2023](https://img.shields.io/badge/NeurIPS%202023-Paper-6420AA?style=for-the-badge&logo=openreview&logoColor=white)](https://openreview.net/attachment?id=CY1xatvEQj&name=pdf) [![ArXiv](https://img.shields.io/badge/arXiv-2306.14685-FF6347?style=for-the-badge&logo=arxiv&logoColor=white)](https://arxiv.org/abs/2306.14685) [![Project Website](https://img.shields.io/badge/Website-Project%20Page-4682B4?style=for-the-badge&logo=github&logoColor=white)](https://ximinng.github.io/DiffSketcher-project/) [![Demo](https://img.shields.io/badge/Demo-Gradio-00CED1?style=for-the-badge&logo=gradio&logoColor=white)](https://huggingface.co/spaces/SVGRender/DiffSketcher)
 
 This repository contains our official implementation of the NeurIPS 2023 paper: DiffSketcher: Text Guided Vector Sketch
 Synthesis through Latent Diffusion Models, which can generate high-quality vector sketches based on text prompts.
-
-> Our Project Page: https://ximinng.github.io/DiffSketcher-project/
 
 ![teaser1](./img/teaser1.png)
 ![teaser2](./img/teaser2.png)
@@ -31,63 +26,25 @@ Synthesis through Latent Diffusion Models, which can generate high-quality vecto
 - [10/2023] We released the DiffSketcher code.
 - [10/2023] We released the [VectorFusion code](https://github.com/ximinng/VectorFusion-pytorch).
 
-## :wrench: Installation
+## 📌 Installation Guide
 
-### Step by step
+To quickly get started with **DiffSketcher**, follow the steps below.  
+These instructions will help you run **quick inference locally**.
 
-Create a new conda environment:
+#### 🚀 **Option 1: Standard Installation**
+
+Run the following command in the **top-level directory**:
 
 ```shell
-conda create --name diffsketcher python=3.10
-conda activate diffsketcher
+chmod +x script/install.sh
+bash script/install.sh
 ```
 
-Install pytorch and the following libraries:
+#### 🐳 Option 2: Using Docker
 
 ```shell
-conda install pytorch==1.13.1 torchvision==0.14.1 torchaudio==0.13.1 pytorch-cuda=11.6 -c pytorch -c nvidia
-pip install omegaconf BeautifulSoup4
-pip install opencv-python scikit-image matplotlib visdom wandb
-pip install triton numba
-pip install numpy scipy timm scikit-fmm einops
-pip install accelerate transformers safetensors datasets
-```
-
-Install CLIP:
-
-```shell
-pip install ftfy regex tqdm
-pip install git+https://github.com/openai/CLIP.git
-```
-
-Install diffusers:
-
-```shell
-pip install diffusers==0.20.2
-```
-
-Install xformers (require `python=3.10`):
-
-```shell
-conda install xformers -c xformers
-```
-
-Install diffvg:
-
-```shell
-git clone https://github.com/BachiLi/diffvg.git
-cd diffvg
-git submodule update --init --recursive
-conda install -y -c anaconda cmake
-conda install -y -c conda-forge ffmpeg
-pip install svgwrite svgpathtools cssutils torch-tools
-python setup.py install
-```
-
-### Docker Usage
-
-```shell
-docker run --name diffsketcher --gpus all -it --ipc=host ximingxing/svgrender:v1 /bin/bash
+chmod +x script/run_svgdreamer_docker.sh
+sudo bash script/run_svgdreamer_docker.sh
 ```
 
 ## 🔥 Quickstart
