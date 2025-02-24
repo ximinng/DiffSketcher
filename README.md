@@ -43,8 +43,8 @@ bash script/install.sh
 #### 🐳 Option 2: Using Docker
 
 ```shell
-chmod +x script/run_svgdreamer_docker.sh
-sudo bash script/run_svgdreamer_docker.sh
+chmod +x script/run_docker.sh
+sudo bash script/run_docker.sh
 ```
 
 ## 🔥 Quickstart
